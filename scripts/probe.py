@@ -159,7 +159,7 @@ try:
     check('pause', abs(position() - paused) < .08, [paused, position()])
     check('seek_exact', seek(2), position())
     command('seek', 1.5, 'absolute+keyframes')
-    check('scrub_preview', wait(lambda: prop('seeking') == 'no' and position() >= 0), position())
+    check('scrub_preview', wait(lambda: prop('seeking') == 'no' and 0 <= position() < 1.8), position())
     check('scrub_release', seek(2.5), position())
     before = position()
     command('frame-step')

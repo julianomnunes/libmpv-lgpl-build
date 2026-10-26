@@ -57,7 +57,16 @@ cmake_static() {
 (cd sources/zlib && CHOST=x86_64-w64-mingw32 ./configure --static --prefix="$PREFIX" && make -j"$JOBS" && make install)
 (cd builds && mkdir iconv && cd iconv && ../../sources/libiconv/configure \
   --prefix="$PREFIX" --host=x86_64-w64-mingw32 --disable-shared --enable-static --disable-nls && make -j"$JOBS" && make install)
+cat > dist/evidence/iconv-link-probe.c <<'EOF'
+#include <iconv.h>
+int main(void) { return iconv_open("UTF-8", "UTF-8") == (iconv_t)-1; }
+EOF
+"$CXX" $CXXFLAGS $LDFLAGS dist/evidence/iconv-link-probe.c -liconv -o builds/iconv-link-probe.exe
 make -C sources/ffnvcodec PREFIX="$PREFIX" install
+(cd sources/luajit && sed -i '/^Libs.private/d' etc/luajit.pc && \
+  make TARGET_SYS=Windows PREFIX="$PREFIX" HOST_CC=gcc CFLAGS='-O2 -pipe' \
+  CROSS=x86_64-w64-mingw32- TARGET_CFLAGS="$CFLAGS" BUILDMODE=static \
+  XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT FILE_T=luajit.exe INSTALL_DEP=src/luajit.exe amalg install)
 meson_static dav1d -Denable_tools=false -Denable_tests=false -Denable_examples=false -Denable_docs=false -Denable_asm=true
 cmake_static freetype -DFT_DISABLE_ZLIB=TRUE -DFT_DISABLE_BZIP2=TRUE -DFT_DISABLE_PNG=TRUE -DFT_DISABLE_HARFBUZZ=TRUE -DFT_DISABLE_BROTLI=TRUE
 meson_static fribidi -Dbin=false -Ddocs=false -Dtests=false
@@ -81,13 +90,14 @@ cp "$PREFIX/lib/pkgconfig/shaderc_combined.pc" "$PREFIX/lib/pkgconfig/shaderc.pc
 
 cmake_static spirv-cross -DSPIRV_CROSS_SHARED=OFF -DSPIRV_CROSS_STATIC=ON \
   -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF
+SPIRV_VERSION=$(python3 -c 'import re; from pathlib import Path; s=Path("sources/spirv-cross/CMakeLists.txt").read_text(); print(".".join(re.search(r"set\(spirv-cross-abi-"+v+r" ([0-9]+)\)",s)[1] for v in ("major","minor","patch")))')
 cat > "$PREFIX/lib/pkgconfig/spirv-cross-c-shared.pc" <<EOF
 prefix=$PREFIX
 libdir=\${prefix}/lib
 includedir=\${prefix}/include/spirv_cross
 Name: spirv-cross-c-shared
 Description: Controlled static SPIRV-Cross C API
-Version: 0.64.0
+Version: $SPIRV_VERSION
 Libs: -L\${libdir} -lspirv-cross-c -lspirv-cross-glsl -lspirv-cross-hlsl -lspirv-cross-reflect -lspirv-cross-msl -lspirv-cross-util -lspirv-cross-core -lstdc++ -lpthread
 Cflags: -I\${includedir}
 EOF
@@ -114,20 +124,22 @@ mkdir -p builds/ffmpeg
   && make -j"$JOBS" && make install)
 cp builds/ffmpeg/config.h builds/ffmpeg/config_components.h dist/evidence/
 cp builds/ffmpeg/ffbuild/config.mak dist/evidence/ffmpeg-config.mak
+for flag in GPL NONFREE VERSION3; do grep -q "^#define CONFIG_$flag 0$" builds/ffmpeg/config.h; done
 
 export MPV_VERSION=v0.41.0-dev-gbaa3e11d4-controlled-lgpl
 printf '0.41.0-dev-gbaa3e11d4-controlled-lgpl\n' > sources/mpv/MPV_VERSION
 meson setup builds/mpv sources/mpv --cross-file scripts/cross.meson \
   --prefix="$PREFIX" --libdir=lib --buildtype=release --default-library=shared --prefer-static \
   --wrap-mode=nodownload --auto-features=disabled -Dgpl=false -Dlibmpv=true -Dcplayer=false \
-  -Dbuild-date=false -Dtests=false -Dlua=disabled \
+  -Dbuild-date=false -Dtests=false -Dlua=luajit \
   -Dgl=enabled -Dgl-win32=enabled -Dplain-gl=enabled -Dgl-dxinterop=enabled \
-  -Dgl-dxinterop-d3d9=enabled -Dd3d11=enabled -Ddirect3d=enabled \
+  -Dgl-dxinterop-d3d9=enabled -Dd3d11=enabled -Ddirect3d=disabled \
   -Dd3d-hwaccel=enabled -Dd3d9-hwaccel=enabled -Dcuda-hwaccel=enabled -Dcuda-interop=enabled \
   -Dwasapi=enabled -Dwin32-threads=enabled -Dvector=enabled \
   -Dshaderc=enabled -Dspirv-cross=enabled -Dlcms2=enabled -Dzimg=enabled -Dzlib=enabled -Diconv=enabled \
-  -Dc_link_args="-static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp,-Map,/work/dist/evidence/libmpv.map" \
-  -Dcpp_link_args="-static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp,-Map,/work/dist/evidence/libmpv.map"
+  -Dc_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map" \
+  -Dcpp_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map"
+grep -q '^#define HAVE_GPL 0$' builds/mpv/config.h
 meson compile -C builds/mpv -j "$JOBS"
 mkdir -p dist/runtime/include/mpv dist/test-tools
 cp builds/mpv/libmpv-2.dll dist/runtime/

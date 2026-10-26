@@ -13,7 +13,8 @@ inherited libraries and selected forbidden dependencies.
 The intended Windows paths are `vo=gpu`, D3D11/OpenGL, D3D11VA/DXVA2/NVDEC,
 WASAPI, exact seeking, frame navigation, reverse playback and still images.
 FFmpeg's native codecs/formats, dav1d and zlib are enabled. libass uses the native
-DirectWrite font provider. Lua/JavaScript, disc support, network-library wrappers,
+DirectWrite font provider. LuaJIT is retained because the `osc=no` option requires
+Lua even when OSC itself is disabled. JavaScript, disc support, network-library wrappers,
 VapourSynth, sixel, Vulkan and other unrelated optional components are disabled.
 LittleCMS's GPL plugins are disabled; its MIT core is retained.
 
