@@ -1,0 +1,62 @@
+name: controlled-lgpl
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: controlled-lgpl-budget
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.run_number <= 3 && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Fetch and verify locked sources
+        run: python3 scripts/sources.py
+      - name: Pull locked toolchain and compile without network
+        run: |
+          IMAGE=ghcr.io/btbn/ffmpeg-builds/win64-lgpl@sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a
+          mkdir -p dist/evidence
+          docker pull "$IMAGE"
+          docker image inspect "$IMAGE" > dist/evidence/toolchain-image.json
+          docker run --rm --network=none -v "$GITHUB_WORKSPACE:/work" -w /work "$IMAGE" bash scripts/build.sh
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: controlled-libmpv-build-${{ github.run_number }}
+          path: dist/
+          retention-days: 90
+          if-no-files-found: error
+  windows-smoke:
+    needs: build
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: controlled-libmpv-build-${{ github.run_number }}
+          path: dist
+      - name: Synthetic fixture and C API smoke
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force probe-results | Out-Null
+          & dist/test-tools/ffmpeg.exe -hide_banner -y -f lavfi -i testsrc2=size=320x180:rate=30 -f lavfi -i sine=frequency=440:sample_rate=48000 -t 5 -c:v mpeg4 -g 15 -q:v 3 -c:a aac -ac 2 probe-results/fixture.mp4
+          if ($LASTEXITCODE -ne 0) { throw 'Fixture generation failed' }
+          python scripts/probe.py --dll dist/runtime/libmpv-2.dll --media probe-results/fixture.mp4 --output probe-results/smoke --warp
+          if ($LASTEXITCODE -ne 0) { throw 'libmpv smoke failed' }
+          & dist/test-tools/ffmpeg.exe -version > probe-results/ffmpeg-version.txt
+          & dist/test-tools/ffmpeg.exe -buildconf > probe-results/ffmpeg-config.txt 2>&1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: windows-smoke-${{ github.run_number }}
+          path: probe-results/
+          retention-days: 90

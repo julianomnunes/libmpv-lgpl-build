@@ -1,0 +1,212 @@
+{
+  "schema": 1,
+  "toolchain_image": "ghcr.io/btbn/ffmpeg-builds/win64-lgpl@sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a",
+  "upstream_recipe_commit": "63ac3265b0789ea16c7b1f8351cd2ad195a28722",
+  "sources": [
+    {
+      "name": "mpv",
+      "repo": "mpv-player/mpv",
+      "commit": "baa3e11d42cb7978da634a8a6a3a55fe074d01be",
+      "license": "LGPL-2.1-or-later",
+      "path": "mpv",
+      "url": "https://codeload.github.com/mpv-player/mpv/tar.gz/baa3e11d42cb7978da634a8a6a3a55fe074d01be",
+      "sha256": "f616394c104e4caf975bde1830336385c17596cdc94a2434d5dd132a5aa4a201"
+    },
+    {
+      "name": "ffmpeg",
+      "repo": "FFmpeg/FFmpeg",
+      "commit": "9d9703e3b6f1e00e56b48067cbcf52a2fb808ee3",
+      "license": "LGPL-2.1-or-later",
+      "path": "ffmpeg",
+      "url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/9d9703e3b6f1e00e56b48067cbcf52a2fb808ee3",
+      "sha256": "d9090aa589f24e1d2aa730b7955d105d5f79ad12f0c7dd6323f10e58538b7b24"
+    },
+    {
+      "name": "zlib",
+      "repo": "madler/zlib",
+      "commit": "767c4c947852e143f582c85f14cf573411df1b35",
+      "license": "Zlib",
+      "path": "zlib",
+      "url": "https://codeload.github.com/madler/zlib/tar.gz/767c4c947852e143f582c85f14cf573411df1b35",
+      "sha256": "cafa75b907cd067b471fba32a2772c010a859086241ef70d3d57eda6aeea3a64"
+    },
+    {
+      "name": "dav1d",
+      "repo": "videolan/dav1d",
+      "commit": "9711965b60bb692ae24004659acf61f5c7d9ed61",
+      "license": "BSD-2-Clause",
+      "path": "dav1d",
+      "url": "https://codeload.github.com/videolan/dav1d/tar.gz/9711965b60bb692ae24004659acf61f5c7d9ed61",
+      "sha256": "d4956d2a926011e242659e0d0e21b0213d61e14e853fa5585a8b79b2a0f115ba"
+    },
+    {
+      "name": "ffnvcodec",
+      "repo": "FFmpeg/nv-codec-headers",
+      "commit": "eddcea9e27f6b772057c9b3f87de2cc1737faffc",
+      "license": "MIT",
+      "path": "ffnvcodec",
+      "url": "https://codeload.github.com/FFmpeg/nv-codec-headers/tar.gz/eddcea9e27f6b772057c9b3f87de2cc1737faffc",
+      "sha256": "ea251ed884765b7523e0f4fa814dfd9acd7b5dcc43878cad744b77a46b429e48"
+    },
+    {
+      "name": "freetype",
+      "repo": "freetype/freetype",
+      "commit": "d333439633039de426f943f28a2926c7f97b5ae5",
+      "license": "FTL",
+      "path": "freetype",
+      "url": "https://codeload.github.com/freetype/freetype/tar.gz/d333439633039de426f943f28a2926c7f97b5ae5",
+      "sha256": "e9d4680f9d751add3571e5407f2943a18ece9c02a78e1bb456aae305254d8bc9"
+    },
+    {
+      "name": "fribidi",
+      "repo": "fribidi/fribidi",
+      "commit": "4c914a92e94a9fe4f30ae83a1130099841566448",
+      "license": "LGPL-2.1-or-later",
+      "path": "fribidi",
+      "url": "https://codeload.github.com/fribidi/fribidi/tar.gz/4c914a92e94a9fe4f30ae83a1130099841566448",
+      "sha256": "2501e74cd7a630f3711da529e8c983582648bb8da0eceb52e000ce6a68bde463"
+    },
+    {
+      "name": "harfbuzz",
+      "repo": "harfbuzz/harfbuzz",
+      "commit": "b3bab62307017934dd7f532c52a696fefb12b3ad",
+      "license": "MIT",
+      "path": "harfbuzz",
+      "url": "https://codeload.github.com/harfbuzz/harfbuzz/tar.gz/b3bab62307017934dd7f532c52a696fefb12b3ad",
+      "sha256": "7c24de123b8f3201a164816d27703662cebd1b416845e71165006cd70fb14a0f"
+    },
+    {
+      "name": "libass",
+      "repo": "libass/libass",
+      "commit": "f61db567e6593df3470e91594bcd4ad2d0473aff",
+      "license": "ISC",
+      "path": "libass",
+      "url": "https://codeload.github.com/libass/libass/tar.gz/f61db567e6593df3470e91594bcd4ad2d0473aff",
+      "sha256": "edb3e866ca9394152484bc9a83b68a395f5c9052ae0dc502e4100035c250330b"
+    },
+    {
+      "name": "lcms2",
+      "repo": "mm2/Little-CMS",
+      "commit": "35cef8775e0ab46f0dda0b46aae1e69d27524432",
+      "license": "MIT",
+      "path": "lcms2",
+      "url": "https://codeload.github.com/mm2/Little-CMS/tar.gz/35cef8775e0ab46f0dda0b46aae1e69d27524432",
+      "sha256": "84f48112ddca86f77f4495d29464c5dd9e24ac080979fbe6e0fa6d3ffcc0ae43"
+    },
+    {
+      "name": "zimg",
+      "repo": "sekrit-twc/zimg",
+      "commit": "67e0603271c080e22c8429856dd4a8a56587e61e",
+      "license": "WTFPL",
+      "path": "zimg",
+      "url": "https://codeload.github.com/sekrit-twc/zimg/tar.gz/67e0603271c080e22c8429856dd4a8a56587e61e",
+      "sha256": "539495d51fcd8c7ef9b89a611454e0c1173d18e8d4e743efdef67c4aa7e40d4f"
+    },
+    {
+      "name": "shaderc",
+      "repo": "google/shaderc",
+      "commit": "a8abeb0b8a9d4b11e3d59ca9f4550b8213e733ab",
+      "license": "Apache-2.0",
+      "path": "shaderc",
+      "url": "https://codeload.github.com/google/shaderc/tar.gz/a8abeb0b8a9d4b11e3d59ca9f4550b8213e733ab",
+      "sha256": "4a2451e747e011695d25847e75316722df80120b3f141600c43c9f5cedd70578"
+    },
+    {
+      "name": "glslang",
+      "repo": "KhronosGroup/glslang",
+      "commit": "e1b562a8bed273a02f30b59b66a5d499793cede5",
+      "license": "BSD-3-Clause AND other permissive licenses",
+      "path": "shaderc/third_party/glslang",
+      "url": "https://codeload.github.com/KhronosGroup/glslang/tar.gz/e1b562a8bed273a02f30b59b66a5d499793cede5",
+      "sha256": "907174a24713c6202c146f164bf81783f1fbc79c8cb821a30f18f159eb980312"
+    },
+    {
+      "name": "spirv-headers",
+      "repo": "KhronosGroup/SPIRV-Headers",
+      "commit": "04fd3caa1e8267e4d95c806cad901181728e1006",
+      "license": "MIT",
+      "path": "shaderc/third_party/spirv-headers",
+      "url": "https://codeload.github.com/KhronosGroup/SPIRV-Headers/tar.gz/04fd3caa1e8267e4d95c806cad901181728e1006",
+      "sha256": "392f4801409aad9c4f1b77745f179952fd6264e4c8bd0fc1bc45dfa6807bf6d0"
+    },
+    {
+      "name": "spirv-tools",
+      "repo": "KhronosGroup/SPIRV-Tools",
+      "commit": "ef96ed763b43b59b33b31b362f09a02b729fa1c9",
+      "license": "Apache-2.0",
+      "path": "shaderc/third_party/spirv-tools",
+      "url": "https://codeload.github.com/KhronosGroup/SPIRV-Tools/tar.gz/ef96ed763b43b59b33b31b362f09a02b729fa1c9",
+      "sha256": "82c62146083fd558735a3171cf97cfc47903ca7d368482e87f94bd44883c0f00"
+    },
+    {
+      "name": "spirv-cross",
+      "repo": "KhronosGroup/SPIRV-Cross",
+      "commit": "aa217aeb6c9f0ace7a0ab233b28807edf45eb165",
+      "license": "Apache-2.0",
+      "path": "spirv-cross",
+      "url": "https://codeload.github.com/KhronosGroup/SPIRV-Cross/tar.gz/aa217aeb6c9f0ace7a0ab233b28807edf45eb165",
+      "sha256": "b99db6ee6182dbeb102257e755bf6d4978c23dcfd3329033304779279bc27212"
+    },
+    {
+      "name": "libplacebo",
+      "repo": "haasn/libplacebo",
+      "commit": "1937beef3a2f508266c68efea1491e3fc4600e04",
+      "license": "LGPL-2.1-or-later",
+      "path": "libplacebo",
+      "url": "https://codeload.github.com/haasn/libplacebo/tar.gz/1937beef3a2f508266c68efea1491e3fc4600e04",
+      "sha256": "696ba3cc9608d2f6116b1eb217d6c974a7d7db52dbb5a2525632d0002d473be5"
+    },
+    {
+      "name": "glad",
+      "repo": "Dav1dde/glad",
+      "commit": "73db193f853e2ee079bf3ca8a64aa2eaf6459043",
+      "license": "MIT AND Apache-2.0",
+      "path": "libplacebo/3rdparty/glad",
+      "url": "https://codeload.github.com/Dav1dde/glad/tar.gz/73db193f853e2ee079bf3ca8a64aa2eaf6459043",
+      "sha256": "33dbeae44d8315ece57e14eba4b1b4a02ac5406d1c4f49cd20048c91522a6b9a"
+    },
+    {
+      "name": "fast-float",
+      "repo": "fastfloat/fast_float",
+      "commit": "97b54ca9e75f5303507699d27c6b4f4efe4641a1",
+      "license": "MIT OR Apache-2.0 OR BSL-1.0",
+      "path": "libplacebo/3rdparty/fast_float",
+      "url": "https://codeload.github.com/fastfloat/fast_float/tar.gz/97b54ca9e75f5303507699d27c6b4f4efe4641a1",
+      "sha256": "2b132274539286e41f37857cac22aa8441d21bd86d55de825a3342b149f66801"
+    },
+    {
+      "name": "jinja",
+      "repo": "pallets/jinja",
+      "commit": "15206881c006c79667fe5154fe80c01c65410679",
+      "license": "BSD-3-Clause",
+      "path": "libplacebo/3rdparty/jinja",
+      "url": "https://codeload.github.com/pallets/jinja/tar.gz/15206881c006c79667fe5154fe80c01c65410679",
+      "sha256": "b88a20dcc2e34072fcf4159325bc6c34cd4b29a81a8b83d15d2f28ba561da296"
+    },
+    {
+      "name": "markupsafe",
+      "repo": "pallets/markupsafe",
+      "commit": "297fc8e356e6836a62087949245d09a28e9f1b13",
+      "license": "BSD-3-Clause",
+      "path": "libplacebo/3rdparty/markupsafe",
+      "url": "https://codeload.github.com/pallets/markupsafe/tar.gz/297fc8e356e6836a62087949245d09a28e9f1b13",
+      "sha256": "da7c010c9c81a66ac73036558c1fcb6212b50482f43211cd1254035b94f82414"
+    },
+    {
+      "name": "vulkan-headers",
+      "repo": "KhronosGroup/Vulkan-Headers",
+      "commit": "74d8a6cb930c68ef617b202c3ff3c59d919e086b",
+      "license": "Apache-2.0 AND MIT",
+      "path": "libplacebo/3rdparty/Vulkan-Headers",
+      "url": "https://codeload.github.com/KhronosGroup/Vulkan-Headers/tar.gz/74d8a6cb930c68ef617b202c3ff3c59d919e086b",
+      "sha256": "75967a8288ff16044a86d1af462b96d2e75c435937efb75f2bb4102ab0382f29"
+    },
+    {
+      "name": "libiconv",
+      "version": "1.18",
+      "license": "LGPL-2.1-or-later (library); GPL-3.0-or-later (tools, not shipped)",
+      "url": "https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz",
+      "sha256": "3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8"
+    }
+  ]
+}
