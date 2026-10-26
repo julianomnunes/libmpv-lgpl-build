@@ -4,6 +4,7 @@ import argparse
 import concurrent.futures
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import tarfile
@@ -64,7 +65,21 @@ def collect(lock):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(path, target)
                 copied.append(relative.as_posix())
-        summary.append({**item, 'notice_files': copied})
+        embedded = []
+        for relative in item.get('embedded_notices', []):
+            original = source / relative
+            blocks = re.findall(r'/\*.*?\*/', original.read_text(), re.S)
+            notices = [block for block in blocks if 'Copyright' in block and 'Permission' in block]
+            if len(notices) != 1:
+                raise RuntimeError('Ambiguous embedded notice: ' + str(original))
+            target = destination / item['name'] / (relative + '.notice.txt')
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(notices[0] + '\n')
+            embedded.append({'source_file': relative,
+                             'source_sha256': hashlib.sha256(original.read_bytes()).hexdigest(),
+                             'notice_file': relative + '.notice.txt',
+                             'notice_sha256': hashlib.sha256(target.read_bytes()).hexdigest()})
+        summary.append({**item, 'notice_files': copied, 'embedded_notice_evidence': embedded})
     (ROOT / 'dist' / 'source-and-license-manifest.json').write_text(json.dumps(summary, indent=2) + '\n')
 
 if __name__ == '__main__':

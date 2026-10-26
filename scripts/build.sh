@@ -83,6 +83,50 @@ cmake_static() {
     cmake --install "builds/$name"
 }
 
+# Restore graphics Vulkan using the already locked headers and matching loader.
+# Fail before iconv/zlib and the long shader/FFmpeg chain on cross-link issues.
+echo '::group::Initial Vulkan loader and Meson preflight'
+cmake -S sources/libplacebo/3rdparty/Vulkan-Headers -B builds/vulkan-headers -GNinja \
+  -DCMAKE_TOOLCHAIN_FILE=/work/scripts/toolchain.cmake \
+  -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib \
+  -DVULKAN_HEADERS_ENABLE_TESTS=OFF -DVULKAN_HEADERS_ENABLE_MODULE=OFF \
+  -DVULKAN_HEADERS_ENABLE_INSTALL=ON
+cmake --install builds/vulkan-headers
+cmake_static vulkan-loader -DBUILD_SHARED_LIBS=ON -DBUILD_TESTS=OFF -DUPDATE_DEPS=OFF \
+  -DLOADER_CODEGEN=OFF -DUSE_GAS=ON -DUSE_MASM=OFF -DCMAKE_ASM_COMPILER="$CC" \
+  -DVulkanHeaders_DIR="$PREFIX/share/cmake/VulkanHeaders" -DLOADER_USE_UNSAFE_FILE_SEARCH=OFF
+"$STRIP" "$PREFIX/bin/vulkan-1.dll"
+ninja -C builds/vulkan-loader -t commands > dist/evidence/vulkan-loader-commands.txt
+grep -q -- '-DUNKNOWN_FUNCTIONS_SUPPORTED' dist/evidence/vulkan-loader-commands.txt
+grep -q 'unknown_ext_chain_gas_x86.S' dist/evidence/vulkan-loader-commands.txt
+cp builds/vulkan-loader/CMakeCache.txt dist/evidence/vulkan-loader-cmake-cache.txt
+cp "$PREFIX/lib/pkgconfig/vulkan.pc" dist/evidence/vulkan.pc
+meson setup builds/vulkan-preflight scripts/vulkan-preflight --cross-file scripts/cross.meson \
+  --prefix="$PREFIX" --libdir=lib --buildtype=release --default-library=shared --prefer-static \
+  --wrap-mode=nodownload --auto-features=disabled
+meson compile -C builds/vulkan-preflight -j 1
+ninja -C builds/vulkan-preflight -t commands > dist/evidence/vulkan-preflight-commands.txt
+x86_64-w64-mingw32-objdump -p builds/vulkan-preflight/vulkan-preflight.exe > dist/evidence/vulkan-preflight-pe.txt
+x86_64-w64-mingw32-objdump -p "$PREFIX/bin/vulkan-1.dll" > dist/evidence/vulkan-loader-pe.txt
+python3 - <<'PYVULKAN'
+import hashlib, json
+from pathlib import Path
+commands = Path('dist/evidence/vulkan-preflight-commands.txt').read_text()
+pe = Path('dist/evidence/vulkan-preflight-pe.txt').read_text()
+assert '/work/prefix/lib/libvulkan-1.dll.a' in commands
+assert 'DLL Name: vulkan-1.dll' in pe
+Path('dist/evidence/vulkan-preflight.json').write_text(json.dumps({
+    'version': '1.4.345', 'loader_commit': '363f465abadab0a8dcfc5c85d2c691e9b0b788d6',
+    'headers_commit': '74d8a6cb930c68ef617b202c3ff3c59d919e086b',
+    'prefer_static': True, 'loader_is_explicit_shared_exception': True,
+    'controlled_import_library': '/work/prefix/lib/libvulkan-1.dll.a',
+    'loader_sha256': hashlib.sha256(Path('/work/prefix/bin/vulkan-1.dll').read_bytes()).hexdigest(),
+    'mingw_gas_unknown_function_trampolines': True,
+    'no_external_dependency_downloads': True,
+}, indent=2) + '\n')
+PYVULKAN
+echo '::endgroup::'
+
 (cd builds && mkdir iconv && cd iconv && ../../sources/libiconv/configure \
   --prefix="$PREFIX" --host=x86_64-w64-mingw32 --disable-shared --enable-static --disable-nls && make -j"$JOBS" && make install)
 echo '::group::Initial Meson static iconv preflight'
@@ -152,7 +196,7 @@ Libs: -L\${libdir} -lspirv-cross-c -lspirv-cross-glsl -lspirv-cross-hlsl -lspirv
 Cflags: -I\${includedir}
 EOF
 meson_static libplacebo -Ddemos=false -Dtests=false -Dbench=false -Dfuzz=false \
-  -Dvulkan=disabled -Dopengl=enabled -Dd3d11=enabled -Dshaderc=enabled \
+  -Dvulkan=enabled -Dvk-proc-addr=enabled -Dopengl=enabled -Dd3d11=enabled -Dshaderc=enabled \
   -Dglslang=disabled -Dlcms=enabled -Dxxhash=disabled -Dlibdovi=disabled -Ddovi=disabled
 if grep -q '^Libs.private:' "$PREFIX/lib/pkgconfig/libplacebo.pc"; then
   sed -i '/^Libs.private:/s/$/ -lstdc++ -lpthread/' "$PREFIX/lib/pkgconfig/libplacebo.pc"
@@ -181,7 +225,7 @@ printf '0.41.0-dev-gbaa3e11d4-controlled-lgpl\n' > sources/mpv/MPV_VERSION
 meson setup builds/mpv sources/mpv --cross-file scripts/cross.meson \
   --prefix="$PREFIX" --libdir=lib --buildtype=release --default-library=shared --prefer-static \
   --wrap-mode=nodownload --auto-features=disabled -Dgpl=false -Dlibmpv=true -Dcplayer=false \
-  -Dbuild-date=false -Dtests=false -Dlua=luajit \
+  -Dbuild-date=false -Dtests=false -Dlua=luajit -Dvulkan=enabled \
   -Dgl=enabled -Dgl-win32=enabled -Dplain-gl=enabled -Dgl-dxinterop=enabled \
   -Dgl-dxinterop-d3d9=enabled -Dd3d11=enabled -Ddirect3d=disabled \
   -Dd3d-hwaccel=enabled -Dd3d9-hwaccel=enabled -Dcuda-hwaccel=enabled -Dcuda-interop=enabled \
@@ -191,14 +235,19 @@ meson setup builds/mpv sources/mpv --cross-file scripts/cross.meson \
   -Dcpp_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map"
 grep -q '^#define HAVE_GPL 0$' builds/mpv/config.h
 grep -q '^#define HAVE_ICONV 1$' builds/mpv/config.h
+grep -q '^#define HAVE_VULKAN 1$' builds/mpv/config.h
+grep -q '^#define HAVE_D3D11 1$' builds/mpv/config.h
 meson compile -C builds/mpv -j "$JOBS"
 mkdir -p dist/runtime/include/mpv dist/test-tools
 cp builds/mpv/libmpv-2.dll dist/runtime/
+cp "$PREFIX/bin/vulkan-1.dll" dist/runtime/
+cp builds/vulkan-preflight/vulkan-preflight.exe dist/test-tools/
 cp sources/mpv/include/mpv/*.h dist/runtime/include/mpv/
 cp builds/mpv/libmpv.dll.a dist/runtime/ 2>/dev/null || true
 cp "$PREFIX/bin/ffmpeg.exe" dist/test-tools/
 "$STRIP" dist/runtime/libmpv-2.dll dist/test-tools/ffmpeg.exe
 x86_64-w64-mingw32-objdump -p dist/runtime/libmpv-2.dll > dist/evidence/libmpv-pe.txt
+grep -q "DLL Name: vulkan-1.dll" dist/evidence/libmpv-pe.txt
 grep -F "$PREFIX/lib/libiconv.a" dist/evidence/libmpv.map > dist/evidence/mpv-iconv-link.txt
 cp -r builds/mpv/meson-info dist/evidence/mpv-meson-info
 cp builds/mpv/config.h dist/evidence/mpv-config.h

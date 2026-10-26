@@ -1,0 +1,19 @@
+{
+  "tag": "v1.4.345",
+  "tag_url": "https://github.com/KhronosGroup/Vulkan-Loader/tree/v1.4.345",
+  "loader_commit": "363f465abadab0a8dcfc5c85d2c691e9b0b788d6",
+  "loader_source_sha256": "46787c41f03c90949a5262eb0eaaca79214829eb59b61c38f7890adb32ea70f8",
+  "headers_commit": "74d8a6cb930c68ef617b202c3ff3c59d919e086b",
+  "known_good_headers_version": "v1.4.345",
+  "compiled_external_dependencies": [
+    "Vulkan-Headers (already locked)",
+    "Windows system libraries including cfgmgr32"
+  ],
+  "excluded_test_dependencies": [
+    "googletest",
+    "Microsoft Detours"
+  ],
+  "license": "Apache-2.0 with bundled MIT cJSON and permissive directory helper",
+  "earlier_25_source_locks_unchanged": true,
+  "toolchain_unchanged": true
+}

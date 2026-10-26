@@ -53,3 +53,13 @@ this temporal association alone does not prove a source-to-toolchain rebuild.
 GitHub Actions artifacts expire. A future distributor must retain and supply
 the source/notice material for the legally required period; a moving upstream
 URL or an expiring CI artifact is not a permanent source-delivery arrangement.
+
+
+Vulkan restoration candidate (runs 8/9): the matching official Khronos
+Vulkan-Loader 1.4.345 is built from its locked source, including its bundled
+cJSON and Windows directory helper. The loader's Apache-2.0 text and embedded
+MIT/permissive copyright/permission notices are copied explicitly and hash
+recorded. Both the loader and its exact headers are included in corresponding
+sources. The resulting runtime must include the matching vulkan-1.dll alongside
+libmpv-2.dll. GPU vendor drivers are system prerequisites, not included binaries.
+LGPL/GPL exclusions and the existing legal-review boundaries above still apply.

@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    if: github.run_number >= 6 && github.run_number <= 7 && github.run_attempt == 1
+    if: github.run_number >= 8 && github.run_number <= 9 && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -31,7 +31,7 @@ jobs:
           retention-days: 90
           if-no-files-found: error
   windows-smoke:
-    if: github.run_number >= 6 && github.run_number <= 7 && github.run_attempt == 1
+    if: github.run_number >= 8 && github.run_number <= 9 && github.run_attempt == 1
     needs: build
     runs-on: windows-2025
     timeout-minutes: 15

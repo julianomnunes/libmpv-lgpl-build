@@ -21,6 +21,9 @@ parser.add_argument('--pyav', choices=['first', 'last'])
 parser.add_argument('--graphics-api', choices=['d3d11', 'opengl', 'vulkan'])
 parser.add_argument('--graphics-context')
 parser.add_argument('--graphics-only', action='store_true')
+parser.add_argument('--visible-host', action='store_true')
+parser.add_argument('--engine-log', action='store_true')
+parser.add_argument('--software-decode', action='store_true')
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 report = {'checks': {}, 'dll_sha256': hashlib.sha256(args.dll.read_bytes()).hexdigest(), 'python': sys.version}
@@ -71,8 +74,10 @@ window_result = {}
 def window_loop():
     # A real host HWND needs a message loop independent of synchronous C API
     # calls. This also lets Vulkan create/destroy its Windows surface safely.
-    hwnd = user.CreateWindowExW(0x08000080, 'STATIC', 'Isolated libmpv probe', 0x80000000,
-                               -32000, -32000, 640, 360, None, None, kernel.GetModuleHandleW(None), None)
+    hwnd = user.CreateWindowExW(0x08000080, 'STATIC', 'Isolated libmpv probe',
+                               0x90000000 if args.visible_host else 0x80000000,
+                               40 if args.visible_host else -32000, 40 if args.visible_host else -32000,
+                               640, 360, None, None, kernel.GetModuleHandleW(None), None)
     window_result.update(hwnd=hwnd, error=C.get_last_error())
     window_ready.set()
     if not hwnd:
@@ -211,6 +216,10 @@ try:
                'osc': 'no', 'cache': 'yes', 'demuxer-max-bytes': str(200*1024*1024),
                'demuxer-max-back-bytes': str(200*1024*1024), 'hr-seek': 'yes',
                'ao': 'wasapi' if args.wasapi else 'null', 'volume': '0', 'config': 'no'}
+    if args.software_decode:
+        options['hwdec'] = 'no'
+    if args.engine_log:
+        options['log-file'] = str((args.output / 'engine-live.log').resolve())
     if args.warp:
         options.update({'gpu-api': 'd3d11', 'gpu-context': 'd3d11', 'd3d11-warp': 'yes'})
     if args.graphics_api:
@@ -221,12 +230,31 @@ try:
     for name, value in options.items():
         check('option:' + name, lib.mpv_set_option_string(handle, name.encode(), value.encode()) >= 0)
     check('initialize', lib.mpv_initialize(handle) >= 0)
+    loader_path = args.dll.resolve().parent / 'vulkan-1.dll'
+    if loader_path.exists():
+        loader = C.CDLL(str(loader_path))
+        loader.vkEnumerateInstanceVersion.argtypes = [C.POINTER(C.c_uint32)]
+        loader.vkEnumerateInstanceVersion.restype = C.c_int
+        kernel.GetModuleFileNameW.argtypes = [W.HMODULE, W.LPWSTR, W.DWORD]
+        actual_path = C.create_unicode_buffer(32768)
+        kernel.GetModuleFileNameW(loader._handle, actual_path, len(actual_path))
+        check('vulkan_loader_identity', Path(actual_path.value).samefile(loader_path))
+        version = C.c_uint32()
+        rc = loader.vkEnumerateInstanceVersion(C.byref(version))
+        report['vulkan_loader'] = {'sha256': hashlib.sha256(loader_path.read_bytes()).hexdigest(),
+                                   'api_version': version.value, 'result': rc}
+        if args.dll.resolve().parent.name == 'runtime':
+            check('vulkan_loader_version', rc == 0 and version.value >= (1 << 22 | 4 << 12 | 345),
+                  report['vulkan_loader'])
+
     if args.pyav == 'last':
         import av
     report['versions'] = {name: prop(name) for name in ('mpv-version', 'ffmpeg-version', 'mpv-configuration')}
     command('loadfile', str(args.media.resolve()))
     check('load', wait(lambda: prop('vo-configured') == 'yes' and prop('audio-params/samplerate') is not None), prop('current-vo'))
     report['output'] = {name: prop(name) for name in ('current-vo', 'current-gpu-context', 'current-ao', 'hwdec-current', 'audio-params', 'video-params')}
+    if args.graphics_context:
+        check('requested_context_selected', prop('current-gpu-context') == args.graphics_context, prop('current-gpu-context'))
     check('audio_output', prop('current-ao') == ('wasapi' if args.wasapi else 'null'), report['output'])
     check('metadata', float(prop('duration') or 0) >= 4 and int(prop('video-params/w') or 0) == 320)
     setprop('pause', 'no')

@@ -1,11 +1,10 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: clean builds 6 and 7 produced an identical DLL; run 7 passed all 50 Windows smoke checks.**
-The EOF harness correction was validated against the preserved DLL and R5.
-Native WASAPI/D3D11VA and both PyAV load orders passed with the exact same DLL
-bytes. All seven executions are first attempts; the authorized budget is spent.
-**Vulkan/R5 equivalence remains blocked and redistribution is not approved.**
-The earlier failures, original DLLs and source/license evidence are preserved.
+**Current state: Vulkan restoration is prepared for authorized runs 8/9.**
+The reproduced non-Vulkan DLL from builds 6/7 is preserved. A matching official
+Khronos loader/header pair is pinned at 1.4.345, with an early loader/Meson
+preflight and all existing D3D11/LGPL checks retained. No new runtime result is
+claimed until the candidate passes its essential Windows probes.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
@@ -25,8 +24,8 @@ FFmpeg's native codecs/formats, dav1d and zlib are enabled. libass uses the nati
 DirectWrite font provider. LuaJIT is retained because the `osc=no` option requires
 Lua even when OSC itself is disabled. JavaScript, disc support, network-library wrappers,
 VapourSynth, sixel and other unused optional components are disabled.
-Vulkan remains disabled and is a blocking R5-equivalence issue until restored
-or technically justified; it is not treated as an irrelevant feature.
+Vulkan is now explicitly required in the candidate recipe; successful build
+and essential native runtime validation are still required before approval.
 LittleCMS's GPL plugins are disabled; its MIT core is retained.
 
 ## Rebuild
@@ -45,7 +44,7 @@ Use a clean directory for each rebuild. Sources, compiler image, build paths,
 timestamp and PE linker timestamp policy are fixed. Reproducibility is an
 empirical result only after independent clean builds produce the same DLL hash.
 The CI is manual-only, uses standard public hosted runners, has a 90-minute
-build timeout and now authorizes only workflow executions 6 and 7, with no rerun.
+build timeout and now authorizes only workflow executions 8 and 9, with no rerun.
 
 The Meson iconv preflight runs immediately after source-building libiconv,
 before the long dependency chain. It uses the same cross file, static-search

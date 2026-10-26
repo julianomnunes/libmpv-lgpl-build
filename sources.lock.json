@@ -225,6 +225,21 @@
       "path": "luajit",
       "url": "https://codeload.github.com/LuaJIT/LuaJIT/tar.gz/a4c064539ea931274d407e1249b4bb575424a0f4",
       "sha256": "15625df3ebfbd1f76371005bffae39b84c65e718e57acc9a9c57863c7c101541"
+    },
+    {
+      "name": "vulkan-loader",
+      "repo": "KhronosGroup/Vulkan-Loader",
+      "version": "1.4.345",
+      "commit": "363f465abadab0a8dcfc5c85d2c691e9b0b788d6",
+      "license": "Apache-2.0 AND MIT AND Kevlin Henney permissive dirent notice",
+      "path": "vulkan-loader",
+      "url": "https://codeload.github.com/KhronosGroup/Vulkan-Loader/tar.gz/363f465abadab0a8dcfc5c85d2c691e9b0b788d6",
+      "sha256": "46787c41f03c90949a5262eb0eaaca79214829eb59b61c38f7890adb32ea70f8",
+      "embedded_notices": [
+        "loader/cJSON.h",
+        "loader/dirent_on_windows.c",
+        "loader/dirent_on_windows.h"
+      ]
     }
   ]
 }

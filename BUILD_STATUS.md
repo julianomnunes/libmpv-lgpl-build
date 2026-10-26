@@ -1,15 +1,14 @@
 # Bounded build evidence
 
-Initial budget: three executions, followed by the completed authorization for
-runs 4 and 5. Current authorization: **at most two new executions, 6 and 7**, no
-reruns. Manual dispatch only. All previous attempt records below are preserved.
+Initial runs 1-7 and their evidence are preserved below. Current authorization:
+**at most two new first-attempt CI executions, 8 and 9**, no reruns. Run 8
+restores Vulkan; run 9 is reserved for a clean reproduction or a specifically
+diagnosed correction. Manual dispatch only.
 
-Current state: **run 7 passed build and Windows smoke (50 checks)**. The DLL
-is byte-identical to the clean build 6; WASAPI/D3D11VA and both PyAV load orders
-passed locally with those exact bytes. The run 6 failure was in the EOF test
-protocol and is preserved. Budget exhausted: seven first-attempt executions,
-no reruns. **Vulkan/R5 equivalence remains blocked; no legal conformity or
-distribution approval is claimed.**
+Current state: the non-Vulkan DLL from clean builds 6/7 remains preserved and
+byte-identical. A reviewed Vulkan 1.4.345 loader/header addition and early Meson
+preflight are prepared for run 8. All existing D3D11, LGPL exclusions and EOF
+recovery tests remain required. No new DLL/runtime result is claimed yet.
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -297,3 +296,43 @@ evidence remain outside the application checkout. [Preservation check](evidence/
 confirmed all seven original fingerprints and the preexisting Git status
 unchanged, including the crash report and R5. No application code/private media
 was uploaded; no application integration, release or 11E work was performed.
+
+
+## Authorized Vulkan continuation: runs 8 and 9
+
+Vulkan-Headers 1.4.345 remains at the already locked commit
+74d8a6cb930c68ef617b202c3ff3c59d919e086b. The matching official Khronos
+Vulkan-Loader tag v1.4.345 resolves to commit
+363f465abadab0a8dcfc5c85d2c691e9b0b788d6; its source archive SHA-256 is
+46787c41f03c90949a5262eb0eaaca79214829eb59b61c38f7890adb32ea70f8.
+Its known_good.json requests exactly the same header version. Production builds
+use only those headers plus Windows system libraries; googletest/Detours are
+excluded test dependencies. The Apache-2.0 license and embedded cJSON MIT and
+Kevlin Henney directory-code notices are preserved explicitly, with hashes.
+No existing source revision or toolchain image is changed.
+
+The loader is built early with MinGW GAS trampolines required, before iconv,
+shaderc and FFmpeg. Automatic dependency downloads, tests, code regeneration
+and unsafe loader searches are off. A minimal C/Meson link uses MPV's same
+prefer_static/default_library options, requires Vulkan >=1.4.309 and exact
+header patch 345, and records the controlled import archive and PE import.
+The Vulkan loader is necessarily a shared Windows library; both vulkan-1.dll
+and libmpv-2.dll are part of the candidate runtime. This explicit Apache-licensed
+shared dependency does not relax any LGPL/GPL controls. libplacebo Vulkan and
+vk-proc-addr, plus MPV Vulkan, are required enabled; D3D11 and iconv stay required.
+FFmpeg's approved configuration is unchanged, including its Vulkan hardware
+codecs/filters remaining disabled; this restoration concerns MPV's graphics
+backend and preserves its existing D3D11VA/DXVA2/NVDEC paths.
+
+Essential validation only: existing Windows D3D11/WARP smoke, native default
+D3D11/WASAPI plus both approved PyAV load orders, and a forced Vulkan synthetic
+playback/navigation probe. The probe verifies the actually loaded bundled
+loader path/hash/API version and the selected graphics context. A visible,
+non-activating host and engine log are available for that Vulkan probe.
+A single pre-CI check with R5 still blocked during first-frame presentation
+with H.264/NVDEC, despite the serviced visible host; its log established Vulkan
+device creation and successful shader/pipeline creation before the stall.
+This is a preexisting test-path limitation, not evidence that the new DLL
+works or fails. Candidate validation may isolate software decoding if the same
+specific interop problem is observed. No HDR/visual/opening stress battery or
+application execution is planned.
