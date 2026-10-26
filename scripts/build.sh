@@ -83,14 +83,39 @@ cmake_static() {
     cmake --install "builds/$name"
 }
 
-(cd sources/zlib && CHOST=x86_64-w64-mingw32 ./configure --static --prefix="$PREFIX" && make -j"$JOBS" && make install)
 (cd builds && mkdir iconv && cd iconv && ../../sources/libiconv/configure \
   --prefix="$PREFIX" --host=x86_64-w64-mingw32 --disable-shared --enable-static --disable-nls && make -j"$JOBS" && make install)
-cat > dist/evidence/iconv-link-probe.c <<'EOF'
-#include <iconv.h>
-int main(void) { return iconv_open("UTF-8", "UTF-8") == (iconv_t)-1; }
-EOF
-"$CXX" $CXXFLAGS $LDFLAGS dist/evidence/iconv-link-probe.c -liconv -o builds/iconv-link-probe.exe
+echo '::group::Initial Meson static iconv preflight'
+python3 scripts/patch_iconv_discovery.py
+meson setup builds/iconv-preflight scripts/iconv-preflight --cross-file scripts/cross.meson \
+  --prefix="$PREFIX" --libdir=lib --buildtype=release --default-library=shared --prefer-static \
+  --wrap-mode=nodownload --auto-features=disabled -Diconv=enabled \
+  -Dc_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map" \
+  -Dcpp_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map"
+meson compile -C builds/iconv-preflight -j 1
+cp builds/iconv-preflight/meson-info/intro-buildoptions.json dist/evidence/iconv-preflight-options.json
+ninja -C builds/iconv-preflight -t commands > dist/evidence/iconv-preflight-commands.txt
+x86_64-w64-mingw32-objdump -p builds/iconv-preflight/iconv-cpp.exe > dist/evidence/iconv-preflight-pe.txt
+python3 - <<'PY'
+import hashlib, json
+from pathlib import Path
+archive = Path('/work/prefix/lib/libiconv.a')
+commands = Path('dist/evidence/iconv-preflight-commands.txt').read_text()
+pe = Path('dist/evidence/iconv-preflight-pe.txt').read_text()
+assert archive.read_bytes()[:8] == b'!<arch>\n'
+assert commands.count(str(archive)) >= 2, 'Both C and C++ must link the controlled static archive'
+assert not list(archive.parent.glob('*iconv*.dll.a')), 'No iconv import archive allowed'
+assert not any('iconv' in line.lower() for line in pe.splitlines() if 'DLL Name:' in line)
+Path('dist/evidence/iconv-meson-preflight.json').write_text(json.dumps({
+    'required_iconv': True, 'prefer_static': True, 'default_library': 'shared',
+    'wrap_mode': 'nodownload', 'auto_features': 'disabled',
+    'controlled_archive': str(archive), 'archive_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
+    'c_and_cpp_linked': True, 'iconv_dll_imported': False,
+    'same_resolution_snippet_in_mpv': True,
+}, indent=2) + '\n')
+PY
+echo '::endgroup::'
+(cd sources/zlib && CHOST=x86_64-w64-mingw32 ./configure --static --prefix="$PREFIX" && make -j"$JOBS" && make install)
 make -C sources/ffnvcodec PREFIX="$PREFIX" install
 meson_static dav1d -Denable_tools=false -Denable_tests=false -Denable_examples=false -Denable_docs=false -Denable_asm=true
 cmake_static freetype -DFT_DISABLE_ZLIB=TRUE -DFT_DISABLE_BZIP2=TRUE -DFT_DISABLE_PNG=TRUE -DFT_DISABLE_HARFBUZZ=TRUE -DFT_DISABLE_BROTLI=TRUE
@@ -165,6 +190,7 @@ meson setup builds/mpv sources/mpv --cross-file scripts/cross.meson \
   -Dc_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map" \
   -Dcpp_link_args="$LDFLAGS -Wl,-Map,/work/dist/evidence/libmpv.map"
 grep -q '^#define HAVE_GPL 0$' builds/mpv/config.h
+grep -q '^#define HAVE_ICONV 1$' builds/mpv/config.h
 meson compile -C builds/mpv -j "$JOBS"
 mkdir -p dist/runtime/include/mpv dist/test-tools
 cp builds/mpv/libmpv-2.dll dist/runtime/
@@ -173,6 +199,7 @@ cp builds/mpv/libmpv.dll.a dist/runtime/ 2>/dev/null || true
 cp "$PREFIX/bin/ffmpeg.exe" dist/test-tools/
 "$STRIP" dist/runtime/libmpv-2.dll dist/test-tools/ffmpeg.exe
 x86_64-w64-mingw32-objdump -p dist/runtime/libmpv-2.dll > dist/evidence/libmpv-pe.txt
+grep -F "$PREFIX/lib/libiconv.a" dist/evidence/libmpv.map > dist/evidence/mpv-iconv-link.txt
 cp -r builds/mpv/meson-info dist/evidence/mpv-meson-info
 cp builds/mpv/config.h dist/evidence/mpv-config.h
 pkg-config --static --libs libass libplacebo > dist/evidence/pkg-config-libs.txt

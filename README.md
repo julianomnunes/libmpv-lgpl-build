@@ -1,9 +1,10 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: no DLL produced; the five-execution budget is exhausted.**
-LuaJIT's host/target preflight and exact image recovery passed in run 5. MPV
-still stops at Meson's static iconv discovery. No Windows runtime or Vulkan
-comparison result is claimed; the original five attempts remain documented.
+**Current result: no DLL produced yet; runs 6 and 7 are now authorized, without reruns.**
+The static iconv discovery correction and matching minimal Meson preflight are
+prepared for run 6. LuaJIT's host/target preflight and exact image recovery passed
+in run 5. No Windows runtime or Vulkan equivalence result is claimed; the five
+previous attempts remain documented.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
@@ -22,7 +23,9 @@ WASAPI, exact seeking, frame navigation, reverse playback and still images.
 FFmpeg's native codecs/formats, dav1d and zlib are enabled. libass uses the native
 DirectWrite font provider. LuaJIT is retained because the `osc=no` option requires
 Lua even when OSC itself is disabled. JavaScript, disc support, network-library wrappers,
-VapourSynth, sixel, Vulkan and other unrelated optional components are disabled.
+VapourSynth, sixel and other unused optional components are disabled.
+Vulkan remains disabled and is a blocking R5-equivalence issue until restored
+or technically justified; it is not treated as an irrelevant feature.
 LittleCMS's GPL plugins are disabled; its MIT core is retained.
 
 ## Rebuild
@@ -41,7 +44,15 @@ Use a clean directory for each rebuild. Sources, compiler image, build paths,
 timestamp and PE linker timestamp policy are fixed. Reproducibility is an
 empirical result only after independent clean builds produce the same DLL hash.
 The CI is manual-only, uses standard public hosted runners, has a 90-minute
-build timeout and now authorizes only workflow executions 4 and 5, with no rerun.
+build timeout and now authorizes only workflow executions 6 and 7, with no rerun.
+
+The Meson iconv preflight runs immediately after source-building libiconv,
+before the long dependency chain. It uses the same cross file, static-search
+options and exact iconv-resolution snippet inserted into MPV's build definition.
+The snippet keeps iconv required and resolves its static archive by explicit
+controlled directory. C/C++ links, selected archive hash and PE import evidence
+are recorded. The only upstream build-definition patch is recorded as a diff
+and hashes; original source archives and all LGPL controls remain unchanged.
 
 The original registry manifest became unavailable during run 4. Its exact OCI
 manifest/config had already been preserved. The loader can recover the same

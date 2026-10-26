@@ -1,13 +1,13 @@
 # Bounded build evidence
 
-Initial budget: three build workflow executions. Authorized continuation:
-**at most two additional executions, numbered 4 and 5**. Manual dispatch only;
-no reruns. The original attempt records below are preserved.
+Initial budget: three executions, followed by the completed authorization for
+runs 4 and 5. Current authorization: **at most two new executions, 6 and 7**, no
+reruns. Manual dispatch only. All previous attempt records below are preserved.
 
-Current state after run 5: **budget exhausted, no DLL**. LuaJIT host/target
-separation and exact image recovery are verified; MPV's static iconv discovery
-remains blocked. Windows operation tests and practical Vulkan comparison were
-not executed.
+Current state: no DLL yet. The run 6 static iconv correction and matching Meson
+preflight are prepared. LuaJIT host/target separation and exact image recovery
+are already verified. Windows tests and practical Vulkan comparison remain
+unexecuted; Vulkan is still an impediment to R5-equivalence approval.
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -157,3 +157,29 @@ executable/native DLLs were preserved; recorded file fingerprints were compared
 unchanged at the end. Only the isolated build repository was updated. No release,
 integration or 11E work was performed. Exactly five first-attempt workflow runs
 exist; no reruns or further execution were requested.
+
+## Authorized continuation: runs 6 and 7
+
+The iconv correction preserves `iconv=enabled`, `static: true`, MPV `gpl=false`
+and all FFmpeg GPL/nonfree exclusions. A single shared Meson snippet uses
+`cc.find_library('iconv', dirs: [prefix/libdir], static: true, required: iconv)`.
+It is evaluated by the preflight and inserted in place of MPV's diagnosed
+directory-less iconv discovery. The patcher verifies the exact original Meson
+file hash and records a minimal diff plus original/patched hashes. No runtime
+source is changed and no binary library is substituted.
+
+Immediately after source-installing iconv, before zlib and the long dependency
+chain, the minimal Meson project uses the same cross file, prefix/libdir,
+`default_library=shared`, `prefer_static=true`, `wrap_mode=nodownload`,
+`auto_features=disabled`, `iconv=enabled` and linker options as MPV. It requires
+the header and builds C/C++ clients. Recorded Ninja commands must select the
+controlled `libiconv.a`; import archives and iconv DLL imports are rejected.
+The real MPV configuration must still report `HAVE_ICONV=1` and its final link
+map must include that static archive. Run 6 follows review/syntax checks; run 7
+is reserved for a clean reproduction if run 6 passes, otherwise a concretely
+diagnosed correction. No reruns or eighth execution are authorized.
+
+Vulkan remains disabled and explicitly blocking. A successful non-Vulkan DLL
+or a local default-backend pass alone does not close R5 equivalence. It must be
+restored or supported by an adequate technical justification. No such closure
+is claimed in this continuation's preparation.
