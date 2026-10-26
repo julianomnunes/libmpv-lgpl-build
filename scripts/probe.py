@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import threading
 import time
 
 parser = argparse.ArgumentParser()
@@ -58,10 +59,38 @@ user.CreateWindowExW.restype = W.HWND
 user.DestroyWindow.argtypes = [W.HWND]
 kernel.GetModuleHandleW.argtypes = [W.LPCWSTR]
 kernel.GetModuleHandleW.restype = W.HMODULE
-window = user.CreateWindowExW(0x08000080, 'STATIC', 'Isolated libmpv probe', 0x80000000,
-                              -32000, -32000, 640, 360, None, None, kernel.GetModuleHandleW(None), None)
-if not window:
-    raise C.WinError(C.get_last_error())
+user.PeekMessageW.argtypes = [C.POINTER(W.MSG), W.HWND, W.UINT, W.UINT, W.UINT]
+user.TranslateMessage.argtypes = [C.POINTER(W.MSG)]
+user.DispatchMessageW.argtypes = [C.POINTER(W.MSG)]
+user.DispatchMessageW.restype = C.c_ssize_t
+window_ready = threading.Event()
+window_stop = threading.Event()
+window_result = {}
+
+
+def window_loop():
+    # A real host HWND needs a message loop independent of synchronous C API
+    # calls. This also lets Vulkan create/destroy its Windows surface safely.
+    hwnd = user.CreateWindowExW(0x08000080, 'STATIC', 'Isolated libmpv probe', 0x80000000,
+                               -32000, -32000, 640, 360, None, None, kernel.GetModuleHandleW(None), None)
+    window_result.update(hwnd=hwnd, error=C.get_last_error())
+    window_ready.set()
+    if not hwnd:
+        return
+    message = W.MSG()
+    while not window_stop.is_set():
+        while user.PeekMessageW(C.byref(message), None, 0, 0, 1):
+            user.TranslateMessage(C.byref(message))
+            user.DispatchMessageW(C.byref(message))
+        window_stop.wait(.005)
+    user.DestroyWindow(hwnd)
+
+
+window_thread = threading.Thread(target=window_loop, daemon=True)
+window_thread.start()
+if not window_ready.wait(5) or not window_result.get('hwnd'):
+    raise RuntimeError(f'Host window creation failed: {window_result}')
+window = window_result['hwnd']
 handle = lib.mpv_create()
 
 def check(name, condition, detail=None):
@@ -115,6 +144,39 @@ def seek(seconds, mode='absolute+exact'):
     command('seek', seconds, mode)
     return wait(lambda: prop('seeking') == 'no' and abs(position() - seconds) < .12)
 
+def stable(predicate, samples, timeout):
+    """Require consecutive observations, as the existing EOF controller does."""
+    count = 0
+    def observe():
+        nonlocal count
+        count = count + 1 if predicate() else 0
+        return count >= samples
+    return wait(observe, timeout)
+
+
+def recover_eof(previous_pts, last_pts):
+    # Validate the application's existing public C-API protocol, not a raw
+    # frame-back-step at keep-open EOF. No application code is imported.
+    gap = last_pts - previous_pts
+    tolerance = max(.00015, min(gap * .40, .015))
+    safe = max(0, min(last_pts, float(prop('duration'))) - 2)
+    destination = previous_pts + min(gap * .12, .002)
+    setprop('pause', 'yes')
+    setprop('play-dir', 'forward')
+    setprop('speed', 1)
+    command('seek', safe, 'absolute+exact')
+    ready = stable(lambda: abs(position() - safe) < .27 and prop('eof-reached') == 'no'
+                   and prop('seeking') == 'no', 2, 3)
+    check('eof_safe_seek', ready, {'target': safe, 'actual': position()})
+    command('seek', destination, 'absolute+exact')
+    ready = stable(lambda: abs(position() - previous_pts) <= tolerance
+                   and position() < last_pts - tolerance and prop('eof-reached') == 'no'
+                   and prop('seeking') == 'no', 4, 2)
+    check('recover_frame_from_eof', ready,
+          {'previous_pts': previous_pts, 'last_pts': last_pts, 'actual': position(),
+           'eof': prop('eof-reached'), 'pause': prop('pause')})
+
+
 def modules():
     psapi = C.WinDLL('psapi', use_last_error=True)
     kernel.GetCurrentProcess.restype = W.HANDLE
@@ -131,8 +193,15 @@ def modules():
         if psapi.GetModuleFileNameExW(process, module, path, len(path)):
             file = Path(path.value)
             name = file.name.lower()
-            if any(part in name for part in ('libmpv', 'avcodec', 'avformat', 'avutil', 'avfilter', 'avdevice', 'swresample', 'swscale', 'x264', 'x265')):
-                found.append({'name': file.name, 'path': str(file).replace(sys.prefix, '%PYTHON_PREFIX%'), 'sha256': hashlib.sha256(file.read_bytes()).hexdigest()})
+            replacements = [(str(args.dll.resolve().parent), '%DLL_DIR%'),
+                            (sys.prefix, '%PYTHON_PREFIX%'),
+                            (str(args.output.resolve()), '%PROBE_OUTPUT%'),
+                            (os.environ.get('WINDIR', r'C:\Windows'), '%WINDIR%')]
+            sanitized = str(file)
+            for origin, label in replacements:
+                sanitized = sanitized.replace(origin, label)
+            found.append({'name': file.name, 'path': sanitized,
+                          'sha256': hashlib.sha256(file.read_bytes()).hexdigest()})
     return found
 
 try:
@@ -196,8 +265,34 @@ try:
     setprop('pause', 'no')
     check('eof', wait(lambda: prop('eof-reached') == 'yes'), position())
     end = position()
-    command('frame-back-step')
-    check('recover_frame_from_eof', wait(lambda: position() < end - .015), [end, position()])
+    if av is not None:
+        with av.open(str(args.media)) as container:
+            video = container.streams.video[0]
+            container.seek(int(max(0, length - 2) / video.time_base), stream=video, backward=True)
+            tail = sorted(set(float(frame.time) for frame in container.decode(video=0)
+                              if frame.time is not None))
+        check('eof_tail_pts', len(tail) >= 2)
+        previous_pts, last_pts = tail[-2:]
+        report['eof_pts_source'] = 'PyAV decoded timestamps'
+    else:
+        # The CI fixture is explicitly CFR 30 fps / 5 s. Do not extrapolate
+        # this fallback to arbitrary media; native PyAV runs decode real PTS.
+        check('synthetic_cfr_fixture', abs(length - 5) < .01
+              and abs(float(prop('container-fps') or 0) - 30) < .001)
+        previous_pts, last_pts = 148 / 30, 149 / 30
+        report['eof_pts_source'] = 'known synthetic CFR fixture (150 frames at 30 fps)'
+    check('eof_visible_last_frame', abs(end - last_pts) < .015, [end, last_pts])
+    recover_eof(previous_pts, last_pts)
+    recovered = position()
+    # At EOF the existing controller starts reverse by controlled frames,
+    # not by immediately changing play-dir (both R5 and this DLL stall there).
+    for index in range(6):
+        before = position()
+        command('frame-back-step')
+        moved = wait(lambda: position() < before - .015, .55)
+        check(f'eof_reverse_frame_{index + 1}', moved, [before, position()])
+    check('reverse_after_eof', position() < recovered - .15,
+          {'start': recovered, 'actual': position(), 'protocol': 'controlled frame-back-step'})
     check('navigation_after_eof', seek(1), position())
     image = args.output / 'preview.png'
     command('screenshot-to-file', str(image.resolve()), 'video')
@@ -229,7 +324,7 @@ try:
         core = [item for item in report['loaded_modules'] if item['name'].lower().startswith(('avcodec-', 'avformat-', 'avutil-'))]
         check('pyav_core_dlls_loaded', len(core) == 3, core)
         for item in core:
-            dll = C.CDLL(item['path'].replace('%PYTHON_PREFIX%', sys.prefix))
+            dll = C.CDLL(item['path'].replace('%PYTHON_PREFIX%', sys.prefix).replace('%DLL_DIR%', str(args.dll.resolve().parent)))
             name = item['name'].split('-')[0]
             func = getattr(dll, name + '_license')
             func.restype = C.c_char_p
@@ -242,7 +337,9 @@ except Exception as error:
     raise
 finally:
     drain()
+    report['loaded_modules'] = modules()
     (args.output / 'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     (args.output / 'mpv.log').write_text(''.join(logs), encoding='utf-8')
     lib.mpv_terminate_destroy(handle)
-    user.DestroyWindow(window)
+    window_stop.set()
+    window_thread.join(timeout=5)

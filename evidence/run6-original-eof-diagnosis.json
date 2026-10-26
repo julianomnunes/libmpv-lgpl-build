@@ -1,0 +1,185 @@
+{
+  "checks": {
+    "option:wid": {
+      "passed": true,
+      "detail": null
+    },
+    "option:vo": {
+      "passed": true,
+      "detail": null
+    },
+    "option:hwdec": {
+      "passed": true,
+      "detail": null
+    },
+    "option:keep-open": {
+      "passed": true,
+      "detail": null
+    },
+    "option:pause": {
+      "passed": true,
+      "detail": null
+    },
+    "option:keepaspect": {
+      "passed": true,
+      "detail": null
+    },
+    "option:input-default-bindings": {
+      "passed": true,
+      "detail": null
+    },
+    "option:input-vo-keyboard": {
+      "passed": true,
+      "detail": null
+    },
+    "option:osc": {
+      "passed": true,
+      "detail": null
+    },
+    "option:cache": {
+      "passed": true,
+      "detail": null
+    },
+    "option:demuxer-max-bytes": {
+      "passed": true,
+      "detail": null
+    },
+    "option:demuxer-max-back-bytes": {
+      "passed": true,
+      "detail": null
+    },
+    "option:hr-seek": {
+      "passed": true,
+      "detail": null
+    },
+    "option:ao": {
+      "passed": true,
+      "detail": null
+    },
+    "option:volume": {
+      "passed": true,
+      "detail": null
+    },
+    "option:config": {
+      "passed": true,
+      "detail": null
+    },
+    "option:gpu-api": {
+      "passed": true,
+      "detail": null
+    },
+    "option:gpu-context": {
+      "passed": true,
+      "detail": null
+    },
+    "option:d3d11-warp": {
+      "passed": true,
+      "detail": null
+    },
+    "initialize": {
+      "passed": true,
+      "detail": null
+    },
+    "load": {
+      "passed": true,
+      "detail": "gpu"
+    },
+    "audio_output": {
+      "passed": true,
+      "detail": {
+        "current-vo": "gpu",
+        "current-gpu-context": "d3d11",
+        "current-ao": "null",
+        "hwdec-current": "no",
+        "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+        "video-params": "{\"pixelformat\":\"yuv420p\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+      }
+    },
+    "metadata": {
+      "passed": true,
+      "detail": null
+    },
+    "playback": {
+      "passed": true,
+      "detail": null
+    },
+    "pause": {
+      "passed": true,
+      "detail": [
+        0.333333,
+        0.333333
+      ]
+    },
+    "seek_exact": {
+      "passed": true,
+      "detail": 2.0
+    },
+    "scrub_preview": {
+      "passed": true,
+      "detail": 1.5
+    },
+    "scrub_release": {
+      "passed": true,
+      "detail": 2.5
+    },
+    "frame_step": {
+      "passed": true,
+      "detail": [
+        2.5,
+        2.533333
+      ]
+    },
+    "frame_back_step": {
+      "passed": true,
+      "detail": [
+        2.533333,
+        2.5
+      ]
+    },
+    "reverse_start": {
+      "passed": true,
+      "detail": null
+    },
+    "reverse": {
+      "passed": true,
+      "detail": 2.766667
+    },
+    "seek_near_eof": {
+      "passed": true,
+      "detail": 4.7
+    },
+    "eof": {
+      "passed": true,
+      "detail": 4.966667
+    },
+    "recover_frame_from_eof": {
+      "passed": false,
+      "detail": [
+        4.966667,
+        4.966667
+      ]
+    }
+  },
+  "dll_sha256": "0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1",
+  "python": "3.14.7 | packaged by conda-forge | (main, Sep  2 2026, 21:12:42) [MSC v.1944 64 bit (AMD64)]",
+  "requested_graphics": {
+    "api": "d3d11",
+    "context": "d3d11",
+    "warp": true
+  },
+  "versions": {
+    "mpv-version": "mpv v0.41.0-dev-gbaa3e11d4-controlled-lgpl",
+    "ffmpeg-version": "8.0.git-controlled-9d9703e3b6f1",
+    "mpv-configuration": "-Dbuildtype=release -Dprefix=/work/prefix -Dlibdir=lib -Ddefault_library=shared -Dprefer_static=true -Dwrap_mode=nodownload -Dauto_features=disabled -Dgpl=false -Dlibmpv=true -Dcplayer=false -Dbuild-date=false -Dtests=false -Dlua=luajit -Dgl=enabled -Dgl-win32=enabled -Dplain-gl=enabled -Dgl-dxinterop=enabled -Dgl-dxinterop-d3d9=enabled -Dd3d11=enabled -Ddirect3d=disabled -Dd3d-hwaccel=enabled -Dd3d9-hwaccel=enabled -Dcuda-hwaccel=enabled -Dcuda-interop=enabled -Dwasapi=enabled -Dwin32-threads=enabled -Dvector=enabled -Dshaderc=enabled -Dspirv-cross=enabled -Dlcms2=enabled -Dzimg=enabled -Dzlib=enabled -Diconv=enabled '-Dc_link_args=-L/work/prefix/lib -static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp -Wl,-Map,/work/dist/evidence/libmpv.map' '-Dcpp_link_args=-L/work/prefix/lib -static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp -Wl,-Map,/work/dist/evidence/libmpv.map' --cross-file=scripts/cross.meson"
+  },
+  "output": {
+    "current-vo": "gpu",
+    "current-gpu-context": "d3d11",
+    "current-ao": "null",
+    "hwdec-current": "no",
+    "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+    "video-params": "{\"pixelformat\":\"yuv420p\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+  },
+  "success": false,
+  "error": "AssertionError('recover_frame_from_eof: [4.966667, 4.966667]')"
+}

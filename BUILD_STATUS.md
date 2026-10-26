@@ -4,10 +4,12 @@ Initial budget: three executions, followed by the completed authorization for
 runs 4 and 5. Current authorization: **at most two new executions, 6 and 7**, no
 reruns. Manual dispatch only. All previous attempt records below are preserved.
 
-Current state: no DLL yet. The run 6 static iconv correction and matching Meson
-preflight are prepared. LuaJIT host/target separation and exact image recovery
-are already verified. Windows tests and practical Vulkan comparison remain
-unexecuted; Vulkan is still an impediment to R5-equivalence approval.
+Current state: run 6 produced a verified DLL; its Windows smoke failed at a
+raw EOF back-step. That same failure was reproduced with R5. The corrected
+probe tests the existing safe-seek/controlled-frame EOF protocol and passed
+locally using the preserved run 6 DLL and R5. WASAPI/D3D11VA and both PyAV load
+orders passed. Run 7 remains the only authorized execution, with no rerun.
+Vulkan remains a blocking R5-equivalence issue; no legal approval is claimed.
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -16,6 +18,7 @@ unexecuted; Vulkan is still an impediment to R5-equivalence approval.
 | 3 | The early iconv C++ link check passed. LuaJIT's Linux host/minilua link inherited the Windows-only `--no-insert-timestamp` flag and failed. No DLL was produced. | [40360933569](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40360933569) |
 | 4 | Source hashes passed; the registry returned `manifest unknown` for the original fixed tool image. Compilation did not start, so the LuaJIT correction was not exercised. | [40366278253](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40366278253) |
 | 5 | Exact image recovered and verified; initial LuaJIT ELF/COFF preflight passed; dependencies and FFmpeg compiled. MPV still failed at static iconv discovery. No DLL; Windows job skipped. | [40367529330](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40367529330) |
+| 6 | Build passed, including the initial static iconv preflight and final static link. Windows smoke failed at raw EOF back-step; the identical failure was reproduced with R5. DLL and both artifacts preserved and verified; corrected local smoke passed without rebuilding. | [40378862793](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40378862793) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -183,3 +186,45 @@ Vulkan remains disabled and explicitly blocking. A successful non-Vulkan DLL
 or a local default-backend pass alone does not close R5 equivalence. It must be
 restored or supported by an adequate technical justification. No such closure
 is claimed in this continuation's preparation.
+
+
+## Run 6: produced DLL, diagnosed Windows harness failure
+
+The DLL SHA-256 is
+`0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1`.
+[Build verification](evidence/run6-build-verification.json) records its size,
+all runtime-file hashes, the 25 verified source archives, actual linked static
+archives, PE imports and excluded GPL dependencies. Static iconv remained
+required and enabled; its early Meson preflight and final MPV link both passed.
+
+- [Build artifact 6](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40378862793/artifacts/12678429164): SHA-256 `aaaf2fe8998dd333a9be11c0851eda54c2e0e87b49ab45b697c1a71a4657f02d`.
+- [Original failing smoke 6](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40378862793/artifacts/12679835813): SHA-256 `ff08f817c392099d498465485eaa37624388a1b0ab51da63820a60b4462c2af3`.
+
+The failing assertion demanded a raw `frame-back-step` immediately after EOF.
+Both this DLL and R5 remain at 4.966667 s on the exact preserved MPEG-4/AAC
+fixture. This is documented behavior of the test scenario, not a newly proven
+library regression. The application already intercepts EOF navigation: pause,
+forward direction, safe exact seek two seconds before the last decoded PTS,
+stable non-EOF observations, then exact seek inside the penultimate frame.
+Reverse at EOF starts through controlled frame commands; switching directly to
+native reverse there stalls with both DLLs. The probe now verifies that actual
+C-API protocol, requiring the penultimate PTS, clear EOF, stable seek and six
+successful backward frames. It does not import or publish application code.
+The synthetic CI fallback explicitly requires the known 150-frame/30-fps fixture;
+PyAV runs use real decoded tail PTS. Ordinary frame stepping and native reverse
+away from EOF remain required checks. The host HWND now runs a dedicated Windows
+message loop instead of leaving the embedding window unserviced.
+
+Before run 7, the corrected probe passed with the preserved DLL on the CI
+fixture, and on H.264/AAC with WASAPI, D3D11VA and PyAV loaded before/after
+libmpv. Metadata, audio samples and decoded EOF frames passed, with three core
+FFmpeg DLL runtime license checks and actual module hashes. No x264/x265 DLLs
+were loaded. The corresponding R5 corrected EOF smoke also passed. These are
+isolated C-API checks, not a full GUI regression or an audible/visual acceptance.
+
+The OpenGL/NVDEC variant stalls in native reverse at 3 s with both R5 and this
+DLL; that path is not approved. The new DLL rejects Vulkan as compiled; a
+D3D11/default pass does not replace that missing fallback. Vulkan remains
+blocking until restored or adequately justified. The build recipe, dependency
+locks and compiler options are unchanged for run 7: it will be a fresh compile
+plus the corrected smoke, not a rerun of run 6, to compare the exact DLL hashes.

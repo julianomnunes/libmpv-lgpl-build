@@ -1,0 +1,683 @@
+{
+  "checks": {
+    "option:wid": {
+      "passed": true,
+      "detail": null
+    },
+    "option:vo": {
+      "passed": true,
+      "detail": null
+    },
+    "option:hwdec": {
+      "passed": true,
+      "detail": null
+    },
+    "option:keep-open": {
+      "passed": true,
+      "detail": null
+    },
+    "option:pause": {
+      "passed": true,
+      "detail": null
+    },
+    "option:keepaspect": {
+      "passed": true,
+      "detail": null
+    },
+    "option:input-default-bindings": {
+      "passed": true,
+      "detail": null
+    },
+    "option:input-vo-keyboard": {
+      "passed": true,
+      "detail": null
+    },
+    "option:osc": {
+      "passed": true,
+      "detail": null
+    },
+    "option:cache": {
+      "passed": true,
+      "detail": null
+    },
+    "option:demuxer-max-bytes": {
+      "passed": true,
+      "detail": null
+    },
+    "option:demuxer-max-back-bytes": {
+      "passed": true,
+      "detail": null
+    },
+    "option:hr-seek": {
+      "passed": true,
+      "detail": null
+    },
+    "option:ao": {
+      "passed": true,
+      "detail": null
+    },
+    "option:volume": {
+      "passed": true,
+      "detail": null
+    },
+    "option:config": {
+      "passed": true,
+      "detail": null
+    },
+    "option:gpu-api": {
+      "passed": true,
+      "detail": null
+    },
+    "option:gpu-context": {
+      "passed": true,
+      "detail": null
+    },
+    "option:d3d11-warp": {
+      "passed": true,
+      "detail": null
+    },
+    "initialize": {
+      "passed": true,
+      "detail": null
+    },
+    "load": {
+      "passed": true,
+      "detail": "gpu"
+    },
+    "audio_output": {
+      "passed": true,
+      "detail": {
+        "current-vo": "gpu",
+        "current-gpu-context": "d3d11",
+        "current-ao": "null",
+        "hwdec-current": "no",
+        "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+        "video-params": "{\"pixelformat\":\"yuv420p\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+      }
+    },
+    "metadata": {
+      "passed": true,
+      "detail": null
+    },
+    "playback": {
+      "passed": true,
+      "detail": null
+    },
+    "pause": {
+      "passed": true,
+      "detail": [
+        0.333333,
+        0.333333
+      ]
+    },
+    "seek_exact": {
+      "passed": true,
+      "detail": 2.0
+    },
+    "scrub_preview": {
+      "passed": true,
+      "detail": 1.5
+    },
+    "scrub_release": {
+      "passed": true,
+      "detail": 2.5
+    },
+    "frame_step": {
+      "passed": true,
+      "detail": [
+        2.5,
+        2.533333
+      ]
+    },
+    "frame_back_step": {
+      "passed": true,
+      "detail": [
+        2.533333,
+        2.5
+      ]
+    },
+    "reverse_start": {
+      "passed": true,
+      "detail": null
+    },
+    "reverse": {
+      "passed": true,
+      "detail": 2.766667
+    },
+    "seek_near_eof": {
+      "passed": true,
+      "detail": 4.7
+    },
+    "eof": {
+      "passed": true,
+      "detail": 4.966667
+    },
+    "synthetic_cfr_fixture": {
+      "passed": true,
+      "detail": null
+    },
+    "eof_visible_last_frame": {
+      "passed": true,
+      "detail": [
+        4.966667,
+        4.966666666666667
+      ]
+    },
+    "eof_safe_seek": {
+      "passed": true,
+      "detail": {
+        "target": 2.966666666666667,
+        "actual": 2.966667
+      }
+    },
+    "recover_frame_from_eof": {
+      "passed": true,
+      "detail": {
+        "previous_pts": 4.933333333333334,
+        "last_pts": 4.966666666666667,
+        "actual": 4.933333,
+        "eof": "no",
+        "pause": "yes"
+      }
+    },
+    "eof_reverse_frame_1": {
+      "passed": true,
+      "detail": [
+        4.933333,
+        4.9
+      ]
+    },
+    "eof_reverse_frame_2": {
+      "passed": true,
+      "detail": [
+        4.9,
+        4.866667
+      ]
+    },
+    "eof_reverse_frame_3": {
+      "passed": true,
+      "detail": [
+        4.866667,
+        4.833333
+      ]
+    },
+    "eof_reverse_frame_4": {
+      "passed": true,
+      "detail": [
+        4.833333,
+        4.8
+      ]
+    },
+    "eof_reverse_frame_5": {
+      "passed": true,
+      "detail": [
+        4.8,
+        4.766667
+      ]
+    },
+    "eof_reverse_frame_6": {
+      "passed": true,
+      "detail": [
+        4.766667,
+        4.733333
+      ]
+    },
+    "reverse_after_eof": {
+      "passed": true,
+      "detail": {
+        "start": 4.933333,
+        "actual": 4.733333,
+        "protocol": "controlled frame-back-step"
+      }
+    },
+    "navigation_after_eof": {
+      "passed": true,
+      "detail": 1.0
+    },
+    "preview_capture": {
+      "passed": true,
+      "detail": "preview.png"
+    },
+    "preview_png": {
+      "passed": true,
+      "detail": null
+    },
+    "preview_load": {
+      "passed": true,
+      "detail": "png"
+    },
+    "no_gpl_codec_dlls": {
+      "passed": true,
+      "detail": null
+    }
+  },
+  "dll_sha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+  "python": "3.14.7 | packaged by conda-forge | (main, Sep  2 2026, 21:12:42) [MSC v.1944 64 bit (AMD64)]",
+  "requested_graphics": {
+    "api": "d3d11",
+    "context": "d3d11",
+    "warp": true
+  },
+  "versions": {
+    "mpv-version": "mpv v0.41.0-1023-g69e63f425",
+    "ffmpeg-version": "N-126390-g9fc8c785e",
+    "mpv-configuration": "-Dprefix=/__w/mpv-winbuild-cmake/mpv-winbuild-cmake/build_x86_64/x86_64-w64-mingw32 -Dlibdir=/__w/mpv-winbuild-cmake/mpv-winbuild-cmake/build_x86_64/x86_64-w64-mingw32/lib -Ddefault_library=shared -Dprefer_static=true -Ddebug=true -Db_ndebug=true -Doptimization=3 -Db_lto=true -Db_lto_mode=thin -Dlibmpv=true -Dpdf-build=enabled -Dlua=enabled -Djavascript=enabled -Dsdl2-gamepad=enabled -Dlibarchive=enabled -Dlibbluray=enabled -Ddvdnav=enabled -Duchardet=enabled -Drubberband=enabled -Dlcms2=enabled -Dopenal=enabled -Dspirv-cross=enabled -Dvulkan=enabled -Dvapoursynth=enabled -Dsubrandr=enabled -Dsixel=enabled -Dgl=enabled -Degl-angle=enabled -Dlibcurl=enabled -Dc_args=-Wno-error=int-conversion --cross-file=/__w/mpv-winbuild-cmake/mpv-winbuild-cmake/build_x86_64/meson_cross.txt"
+  },
+  "output": {
+    "current-vo": "gpu",
+    "current-gpu-context": "d3d11",
+    "current-ao": "null",
+    "hwdec-current": "no",
+    "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+    "video-params": "{\"pixelformat\":\"yuv420p\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+  },
+  "eof_pts_source": "known synthetic CFR fixture (150 frames at 30 fps)",
+  "loaded_modules": [
+    {
+      "name": "python.exe",
+      "path": "%PYTHON_PREFIX%\\python.exe",
+      "sha256": "280a54b8c3e32f8038d4d71d2f3a5a88e9643543f2ab1ad1d0e629fc8ee63f68"
+    },
+    {
+      "name": "ntdll.dll",
+      "path": "%WINDIR%\\SYSTEM32\\ntdll.dll",
+      "sha256": "651ac9041af8e6b5ebd331d53163244c0a27d36d1433f0f15cac1f28c5f2e82c"
+    },
+    {
+      "name": "KERNEL32.DLL",
+      "path": "%WINDIR%\\System32\\KERNEL32.DLL",
+      "sha256": "e132eba4166256e2f414b91fe7d5386590bc5ea8626aee5af9c9738383cf2ae1"
+    },
+    {
+      "name": "KERNELBASE.dll",
+      "path": "%WINDIR%\\System32\\KERNELBASE.dll",
+      "sha256": "5c29b73622ce0976e1ada566f31f2197ba0f8beaea89c3ec033366126172c3d0"
+    },
+    {
+      "name": "ucrtbase.dll",
+      "path": "%WINDIR%\\System32\\ucrtbase.dll",
+      "sha256": "dedb7611e1abc1ff3852dcac3d4c93a048d729e25b061973b9969f22698f14ca"
+    },
+    {
+      "name": "python314.dll",
+      "path": "%PYTHON_PREFIX%\\python314.dll",
+      "sha256": "c6c3e01b507e493082d4fc6af887fbd2a94d0f1e3f8f391e64ff300c3d6a7982"
+    },
+    {
+      "name": "VCRUNTIME140.dll",
+      "path": "%PYTHON_PREFIX%\\VCRUNTIME140.dll",
+      "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7"
+    },
+    {
+      "name": "WS2_32.dll",
+      "path": "%WINDIR%\\System32\\WS2_32.dll",
+      "sha256": "b123b00c46c415d7baeaada58c29c3e6920895db836ee4c0cfee49d738af60ad"
+    },
+    {
+      "name": "RPCRT4.dll",
+      "path": "%WINDIR%\\System32\\RPCRT4.dll",
+      "sha256": "c060f02c11fb19c9c8a30b5077a87cdb17d4be40f08070a539ec73eb53402775"
+    },
+    {
+      "name": "VERSION.dll",
+      "path": "%WINDIR%\\SYSTEM32\\VERSION.dll",
+      "sha256": "cea99f212af557a9613150c5509631403ed0f05f5d9a06ac42039bd59b40e39a"
+    },
+    {
+      "name": "ADVAPI32.dll",
+      "path": "%WINDIR%\\System32\\ADVAPI32.dll",
+      "sha256": "b864e1468a01a44f1901e03c05c1029e71655dd9abddd6d840bcfff5e7227d44"
+    },
+    {
+      "name": "msvcrt.dll",
+      "path": "%WINDIR%\\System32\\msvcrt.dll",
+      "sha256": "fc1447db4e4814cbcb002179a8003a41f383fc417879f628727043cab8c25093"
+    },
+    {
+      "name": "sechost.dll",
+      "path": "%WINDIR%\\System32\\sechost.dll",
+      "sha256": "b4a345ad9af0635f50e27eea8ae0ff37255dca90e6d5991bdbc4806fb02aaa72"
+    },
+    {
+      "name": "bcrypt.dll",
+      "path": "%WINDIR%\\SYSTEM32\\bcrypt.dll",
+      "sha256": "d0fc7863d7b034da33f34dc82b96a8604572598a217668a43fc9eca3a8e2a8e1"
+    },
+    {
+      "name": "zlib.dll",
+      "path": "%PYTHON_PREFIX%\\zlib.dll",
+      "sha256": "f4f26ea6300c8449daad4650915e01ac80aafc6ca8b73a50be450f1fb66cdd63"
+    },
+    {
+      "name": "bcryptprimitives.dll",
+      "path": "%WINDIR%\\System32\\bcryptprimitives.dll",
+      "sha256": "f0dba794068893c9616b0b54bef1be8f904be89eb2cb09b575d3d7fb1b5000f8"
+    },
+    {
+      "name": "python3.DLL",
+      "path": "%PYTHON_PREFIX%\\python3.DLL",
+      "sha256": "45c6e6d21e8adaac3df7692148c0466349c8d118aa72df7ff5ac19c58d282227"
+    },
+    {
+      "name": "_ctypes.pyd",
+      "path": "%PYTHON_PREFIX%\\DLLs\\_ctypes.pyd",
+      "sha256": "b260d5e26cc2fed83f8db9eeb66a7d656f5faf19ad07847fe071679be2917dff"
+    },
+    {
+      "name": "ole32.dll",
+      "path": "%WINDIR%\\System32\\ole32.dll",
+      "sha256": "1053ffb858cddbe29eaaa6a5b0836b88c7cd11fbd58605288600e507c06db443"
+    },
+    {
+      "name": "msvcp_win.dll",
+      "path": "%WINDIR%\\System32\\msvcp_win.dll",
+      "sha256": "b9dacd83201e59bb74e5282d8f0dcc8c428525409b4bc458a39eb8d2a9373a9a"
+    },
+    {
+      "name": "GDI32.dll",
+      "path": "%WINDIR%\\System32\\GDI32.dll",
+      "sha256": "772c73e294a4c5f5e0d4146288af95287a85c074d3aee3fa9f320dc010d7dbfe"
+    },
+    {
+      "name": "ffi-8.dll",
+      "path": "%PYTHON_PREFIX%\\Library\\bin\\ffi-8.dll",
+      "sha256": "922fe231d83f412d351e2560714e248d097aae0b44c8410fb1826411e2528e69"
+    },
+    {
+      "name": "win32u.dll",
+      "path": "%WINDIR%\\System32\\win32u.dll",
+      "sha256": "d46a695db805e808efa63d1095ce3e1b6be9c0155dad405d444530efc1ed0362"
+    },
+    {
+      "name": "gdi32full.dll",
+      "path": "%WINDIR%\\System32\\gdi32full.dll",
+      "sha256": "52de3e02898e9c0e243d08d5c51d54871e9bce90de883eff7df29a30fc8aeac9"
+    },
+    {
+      "name": "USER32.dll",
+      "path": "%WINDIR%\\System32\\USER32.dll",
+      "sha256": "f285937030bcb325cad39ee5be4818f6666241229adeadea4ff1ae469dfd7ef3"
+    },
+    {
+      "name": "combase.dll",
+      "path": "%WINDIR%\\System32\\combase.dll",
+      "sha256": "087f72ecc0c979a3b784ab319285ab64d053dfc0c274df5b28fd40cf204a234f"
+    },
+    {
+      "name": "OLEAUT32.dll",
+      "path": "%WINDIR%\\System32\\OLEAUT32.dll",
+      "sha256": "e3fcdbbf040fd1e3c3504876cf060ac3908c134ac81b3d0c57f0f735769280ea"
+    },
+    {
+      "name": "IMM32.DLL",
+      "path": "%WINDIR%\\System32\\IMM32.DLL",
+      "sha256": "7e45f12c1c555e2407c5ca082bd925b34655278fde4dbfac53a0468cc1e77411"
+    },
+    {
+      "name": "_hashlib.pyd",
+      "path": "%PYTHON_PREFIX%\\DLLs\\_hashlib.pyd",
+      "sha256": "a2eb46e327663356ab5d7663cc316d714df2660b800d6c234d651b740be4899a"
+    },
+    {
+      "name": "libcrypto-3-x64.dll",
+      "path": "%PYTHON_PREFIX%\\Library\\bin\\libcrypto-3-x64.dll",
+      "sha256": "7ff26fb03c914b87e22f55c6abed6eda0bfbfc628f9c1f1fde67993ddf1f8d47"
+    },
+    {
+      "name": "CRYPT32.dll",
+      "path": "%WINDIR%\\System32\\CRYPT32.dll",
+      "sha256": "71da5f9806f7aaf9e081c1df28b13182d2643b7f3534173f868ba65287612bbb"
+    },
+    {
+      "name": "_bz2.pyd",
+      "path": "%PYTHON_PREFIX%\\DLLs\\_bz2.pyd",
+      "sha256": "c4aa15674467b05ebcb1fedb802f76d366f15bccdeabaf5fb9857a67158009d3"
+    },
+    {
+      "name": "libbz2.dll",
+      "path": "%PYTHON_PREFIX%\\Library\\bin\\libbz2.dll",
+      "sha256": "7f3ddbb88b670d79ada028480067ccdf240601319128e40eec8dce1daf4a9238"
+    },
+    {
+      "name": "_lzma.pyd",
+      "path": "%PYTHON_PREFIX%\\DLLs\\_lzma.pyd",
+      "sha256": "372b10b805e6244ba0a7fb19e99ebe015e159425adc7c0dab4bf3f110c821a68"
+    },
+    {
+      "name": "liblzma.dll",
+      "path": "%PYTHON_PREFIX%\\Library\\bin\\liblzma.dll",
+      "sha256": "8439ed3564a8dbbf6355e29c92e88fdf1f6dee096504149fc051104155c868a9"
+    },
+    {
+      "name": "_zstd.pyd",
+      "path": "%PYTHON_PREFIX%\\DLLs\\_zstd.pyd",
+      "sha256": "57a8f906cbec5a621b3487150757d468d6405399d8598534fb58f80fdd8c011d"
+    },
+    {
+      "name": "zstd.dll",
+      "path": "%PYTHON_PREFIX%\\Library\\bin\\zstd.dll",
+      "sha256": "fcc1dc71b7df5489e37a78abab9c31d763570d55e93c67f388058c41c0d7b8df"
+    },
+    {
+      "name": "libmpv-2.dll",
+      "path": "%DLL_DIR%\\libmpv-2.dll",
+      "sha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+    },
+    {
+      "name": "SHELL32.dll",
+      "path": "%WINDIR%\\System32\\SHELL32.dll",
+      "sha256": "c55a5f3b6ef059871fe2a0c8d82f086e0998d1154023e3ecf49698b97f9341f6"
+    },
+    {
+      "name": "vulkan-1.dll",
+      "path": "%DLL_DIR%\\vulkan-1.dll",
+      "sha256": "cd862090370454630b31b174e3d4eb474fda38ea034998d1fe1767b0c99a8696"
+    },
+    {
+      "name": "SHCORE.dll",
+      "path": "%WINDIR%\\System32\\SHCORE.dll",
+      "sha256": "60fa3face0cfeccd442ef8c10f0d98f7991998784d21c8f7b77fc1048b222c95"
+    },
+    {
+      "name": "SHLWAPI.dll",
+      "path": "%WINDIR%\\System32\\SHLWAPI.dll",
+      "sha256": "77b883ae848e1209b17ded14e6558656651f84d47cd656d1d3c118cc5409ed5b"
+    },
+    {
+      "name": "WLDAP32.dll",
+      "path": "%WINDIR%\\System32\\WLDAP32.dll",
+      "sha256": "ee80a890d23cdac19051f7f2ec06933a291ab7ccec618141e0a007533670f7e6"
+    },
+    {
+      "name": "AVRT.dll",
+      "path": "%WINDIR%\\SYSTEM32\\AVRT.dll",
+      "sha256": "8fc53d3d44d744aede6d5cc2b8afd5edc1c7292e81330755de1a9fda3506255c"
+    },
+    {
+      "name": "SETUPAPI.dll",
+      "path": "%WINDIR%\\System32\\SETUPAPI.dll",
+      "sha256": "9cca168a1a95fef4a69b8cb0f1e310b793563833658169cacaf3ad67382ba2c7"
+    },
+    {
+      "name": "dwmapi.dll",
+      "path": "%WINDIR%\\SYSTEM32\\dwmapi.dll",
+      "sha256": "733c4dbf3e3fc521199ae57a5adc0b780d8c63d3de96676670cbf6d27cfed5e2"
+    },
+    {
+      "name": "Normaliz.dll",
+      "path": "%WINDIR%\\System32\\Normaliz.dll",
+      "sha256": "8a6ee80a338e6b090757a4a5bd217072c9d7e2aa3cf80f99428f9032d48f8057"
+    },
+    {
+      "name": "UxTheme.dll",
+      "path": "%WINDIR%\\SYSTEM32\\UxTheme.dll",
+      "sha256": "e5087142f87989c7430d82a65616817a2515a79fa582549ba48a1dd6ac1b7200"
+    },
+    {
+      "name": "OPENGL32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\OPENGL32.dll",
+      "sha256": "659be03cf2b88b5063a35b2637d9ef38122d7f6f30dafff118fa41b273aa5ece"
+    },
+    {
+      "name": "CFGMGR32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\CFGMGR32.dll",
+      "sha256": "fea3f02ba1a9ac87f7ec53932a5821d3d894d70c828a441c8767059efa53f5c5"
+    },
+    {
+      "name": "DWrite.dll",
+      "path": "%WINDIR%\\SYSTEM32\\DWrite.dll",
+      "sha256": "45b8d6534fd6cd884bfc38a62c007da0d9d5f29324bcb1f31cbf0528bc2e7eae"
+    },
+    {
+      "name": "AVICAP32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\AVICAP32.dll",
+      "sha256": "9ad624831aa3b90ac9443bff483e9eada5cd9ac3f517490d63ecb61d527f3997"
+    },
+    {
+      "name": "WINMM.dll",
+      "path": "%WINDIR%\\SYSTEM32\\WINMM.dll",
+      "sha256": "b9035da2ee058fe565ecb3c0064f46f2d09bde01f29e423ffe6b33e15c773f04"
+    },
+    {
+      "name": "IPHLPAPI.DLL",
+      "path": "%WINDIR%\\SYSTEM32\\IPHLPAPI.DLL",
+      "sha256": "8521026d021cc5193a7cd7c0256bd14c7ab39738d22c019e6d544b37deee12c0"
+    },
+    {
+      "name": "Secur32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\Secur32.dll",
+      "sha256": "4050dfd0d4e04e8d013cb16c09d90c2177e2b7e4f102f5931187b2bd0c9d14fc"
+    },
+    {
+      "name": "d2d1.dll",
+      "path": "%WINDIR%\\SYSTEM32\\d2d1.dll",
+      "sha256": "3a12c519471c492a37fa4a1228842af71c42010e148019a7cdc23c9ea2a7fe7c"
+    },
+    {
+      "name": "GLU32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\GLU32.dll",
+      "sha256": "3120ba185c4505b0864fe4c113caff3fd0bbf0e231f8a95c89caf9b74e957a54"
+    },
+    {
+      "name": "MSVFW32.dll",
+      "path": "%WINDIR%\\SYSTEM32\\MSVFW32.dll",
+      "sha256": "5d111bf8883bab610496c731b0b1602287f662ece5aa695eb7a6c5608c2ddac9"
+    },
+    {
+      "name": "dxcore.dll",
+      "path": "%WINDIR%\\SYSTEM32\\dxcore.dll",
+      "sha256": "df9b1da21162c1dba8399c755805b66d2bfde06e55313c73b1360bbed2e2f71d"
+    },
+    {
+      "name": "CRYPTBASE.DLL",
+      "path": "%WINDIR%\\SYSTEM32\\CRYPTBASE.DLL",
+      "sha256": "09c2d3e0f1c3d86f4a69496acf6d0c0901715ee2f02f20afc10d6dc9e639b03f"
+    },
+    {
+      "name": "COMCTL32.dll",
+      "path": "%WINDIR%\\WinSxS\\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.9711_none_3e07b8b0e334e825\\COMCTL32.dll",
+      "sha256": "645e27c04538e8079b0db62cef14b6353dd83a1b09a68a7d6c1b69e83cfd65e3"
+    },
+    {
+      "name": "SSPICLI.DLL",
+      "path": "%WINDIR%\\SYSTEM32\\SSPICLI.DLL",
+      "sha256": "5aa8f7bbcc7a8a422d14612d9ca1f8a50acd6030eb4bff204a205fec76f27a59"
+    },
+    {
+      "name": "kernel.appcore.dll",
+      "path": "%WINDIR%\\SYSTEM32\\kernel.appcore.dll",
+      "sha256": "ed6d62f2555d260547cc94a5cdfe2a6fcb684f18b8e182f78f9e4de224321fc9"
+    },
+    {
+      "name": "MSCTF.dll",
+      "path": "%WINDIR%\\System32\\MSCTF.dll",
+      "sha256": "e8f3fe84ee46760e6e9eb914d61f88125d699047ad0e17b9283fb553927417be"
+    },
+    {
+      "name": "mswsock.dll",
+      "path": "%WINDIR%\\system32\\mswsock.dll",
+      "sha256": "b4b75a9e5bfaa236a06f78c96f9655529a83d80b6558a84fdd4128d5cf46381c"
+    },
+    {
+      "name": "dxgi.dll",
+      "path": "%WINDIR%\\SYSTEM32\\dxgi.dll",
+      "sha256": "4225e13f27a4f3a4a4738e64a57fa0949d8589f317fc6f8ec194b3a4d394a528"
+    },
+    {
+      "name": "powrprof.dll",
+      "path": "%WINDIR%\\SYSTEM32\\powrprof.dll",
+      "sha256": "096b3c77ad7fece122be0362c72530b1edc024fe7107d1d40d8bcd8fa5428a0e"
+    },
+    {
+      "name": "UMPDC.dll",
+      "path": "%WINDIR%\\SYSTEM32\\UMPDC.dll",
+      "sha256": "b3407a812c7f34ac6b5beefb2a78e8f2d7c4376f7c7012f880aab4fe07235e4e"
+    },
+    {
+      "name": "directxdatabasehelper.dll",
+      "path": "%WINDIR%\\SYSTEM32\\directxdatabasehelper.dll",
+      "sha256": "5d93b932415287f077ac3bde9dad9de2fb87d907f818c976b35e6caf1c095ddd"
+    },
+    {
+      "name": "d3d11.dll",
+      "path": "%WINDIR%\\SYSTEM32\\d3d11.dll",
+      "sha256": "c9aee071495039e820cd0be0afdeb927b9ad32edc1d0dae460b6d64064b524f6"
+    },
+    {
+      "name": "D3D10Warp.dll",
+      "path": "%WINDIR%\\SYSTEM32\\D3D10Warp.dll",
+      "sha256": "8da8d6ab8d5ca463a421df65860c7b01d3a4ec18a29e3279cfe63c5ee164300e"
+    },
+    {
+      "name": "d3dcompiler_47.dll",
+      "path": "%WINDIR%\\SYSTEM32\\d3dcompiler_47.dll",
+      "sha256": "0f89c19165fd83a05e39bea601a06007e6a8814d55e2adf913902926231f843e"
+    },
+    {
+      "name": "cryptsp.dll",
+      "path": "%WINDIR%\\SYSTEM32\\cryptsp.dll",
+      "sha256": "a00222ccee9f6fbbfd3f34437cc54f4bfbe9025e3f3399a9c2cedc88c37c3f46"
+    },
+    {
+      "name": "mscms.dll",
+      "path": "%WINDIR%\\SYSTEM32\\mscms.dll",
+      "sha256": "2f81079500f55cf0cf3e8b8d0e432e420ff4603505789f17adc6da1de0bc5ca2"
+    },
+    {
+      "name": "clbcatq.dll",
+      "path": "%WINDIR%\\System32\\clbcatq.dll",
+      "sha256": "48a18351e09d5da0a7b45eb81bc7819488b160fb71f8979129ff5a4bd34d2595"
+    },
+    {
+      "name": "dataexchange.dll",
+      "path": "%WINDIR%\\system32\\dataexchange.dll",
+      "sha256": "e427d8b37cde980a4746659e27d514c2c87c1883718286710a21f3aa43bd1ca0"
+    },
+    {
+      "name": "twinapi.appcore.dll",
+      "path": "%WINDIR%\\system32\\twinapi.appcore.dll",
+      "sha256": "000736bd54e9376e78ebe8eef87832606a058e0c2a1df290642177e7858b81a0"
+    },
+    {
+      "name": "explorerframe.dll",
+      "path": "%WINDIR%\\system32\\explorerframe.dll",
+      "sha256": "b7bda6011c0c13a81a6ea9670789c3ecb241caf994d31e274add18704929ca6d"
+    },
+    {
+      "name": "dcomp.dll",
+      "path": "%WINDIR%\\SYSTEM32\\dcomp.dll",
+      "sha256": "4077bf81a9a178d097288ed5b47a66b21881fb7581ddd142e53e66f0f94376ed"
+    },
+    {
+      "name": "Microsoft.Internal.WarpPal.dll",
+      "path": "%WINDIR%\\SYSTEM32\\Microsoft.Internal.WarpPal.dll",
+      "sha256": "c9ab2e96692ba5b74d27c5287fd3aa5d892fe16ef6210c4ce04fb22ac0496450"
+    },
+    {
+      "name": "psapi.DLL",
+      "path": "%WINDIR%\\System32\\psapi.DLL",
+      "sha256": "6c8ebe6621224d11ded0c920873d67b5255fd515e8c4ea803cd587c8232bee5c"
+    }
+  ],
+  "success": true
+}

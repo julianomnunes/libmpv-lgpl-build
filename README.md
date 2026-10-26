@@ -1,10 +1,11 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: no DLL produced yet; runs 6 and 7 are now authorized, without reruns.**
-The static iconv discovery correction and matching minimal Meson preflight are
-prepared for run 6. LuaJIT's host/target preflight and exact image recovery passed
-in run 5. No Windows runtime or Vulkan equivalence result is claimed; the five
-previous attempts remain documented.
+**Current result: run 6 produced a DLL; the final clean build 7 is reserved.**
+The Windows smoke failure was reproduced with R5 and diagnosed as an incorrect
+EOF test protocol. The corrected probe passed on the preserved DLL, including
+WASAPI and both PyAV load orders. Vulkan/R5 equivalence and redistribution
+approval remain open. The earlier attempt records and failing evidence remain
+preserved.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
