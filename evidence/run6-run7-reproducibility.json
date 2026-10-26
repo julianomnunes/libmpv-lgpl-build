@@ -1,0 +1,171 @@
+{
+  "runs": [
+    {
+      "number": 6,
+      "id": 40378862793,
+      "commit": "473c431426e56644fc89c8cff181f86c5f4a4be2"
+    },
+    {
+      "number": 7,
+      "id": 40401417585,
+      "commit": "9a16d045aa9d907a92c59b6bc43d2f7b63bfcda6"
+    }
+  ],
+  "fresh_hosted_jobs": true,
+  "run_attempts": [
+    1,
+    1
+  ],
+  "identical_dll_bytes": true,
+  "dll_sha256": "0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1",
+  "dll_bytes": 55753216,
+  "compared_files": {
+    "runtime/libmpv-2.dll": {
+      "run6_sha256": "0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1",
+      "run7_sha256": "0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1",
+      "equal": true
+    },
+    "test-tools/ffmpeg.exe": {
+      "run6_sha256": "b0fa7fe73d7f605899cc6504f7df0ccb1d8a545b1c3e72d2c5746459b038da5c",
+      "run7_sha256": "b0fa7fe73d7f605899cc6504f7df0ccb1d8a545b1c3e72d2c5746459b038da5c",
+      "equal": true
+    },
+    "SHA256SUMS": {
+      "run6_sha256": "0c85d346a13caec7ee423e509ab4f888d371514dd1fffa6a7b555a7ca4b288e8",
+      "run7_sha256": "0c85d346a13caec7ee423e509ab4f888d371514dd1fffa6a7b555a7ca4b288e8",
+      "equal": true
+    },
+    "sources.lock.json": {
+      "run6_sha256": "099722e0663e829b7b61ed12fd7a621ec1c3ab59901502a56631ffbcc142dc29",
+      "run7_sha256": "099722e0663e829b7b61ed12fd7a621ec1c3ab59901502a56631ffbcc142dc29",
+      "equal": true
+    },
+    "source-and-license-manifest.json": {
+      "run6_sha256": "8dd24a74165f4c069493e062b93404c6ff8d89bab6c490dae9a2299d61193280",
+      "run7_sha256": "8dd24a74165f4c069493e062b93404c6ff8d89bab6c490dae9a2299d61193280",
+      "equal": true
+    },
+    "evidence/toolchain-reference.txt": {
+      "run6_sha256": "398b361e060152b8a2abedede163f69f297ca6eaac2717cb3d6b57ddaf9e4c7d",
+      "run7_sha256": "398b361e060152b8a2abedede163f69f297ca6eaac2717cb3d6b57ddaf9e4c7d",
+      "equal": true
+    },
+    "evidence/compiler-runtime-hashes.txt": {
+      "run6_sha256": "6baf80e6a4b2a41a065c8ea74e9de61926842853b730c2c5e329495e685a24bf",
+      "run7_sha256": "6baf80e6a4b2a41a065c8ea74e9de61926842853b730c2c5e329495e685a24bf",
+      "equal": true
+    },
+    "evidence/mpv-config.h": {
+      "run6_sha256": "151f63eefe1c5b0e5af3f60407cf6dbec3a9ba30febfb4497c30c91b026f05f2",
+      "run7_sha256": "151f63eefe1c5b0e5af3f60407cf6dbec3a9ba30febfb4497c30c91b026f05f2",
+      "equal": true
+    },
+    "evidence/config.h": {
+      "run6_sha256": "f0a94bf91ffac11dafe0bf43dce4f0173e5c23d1f3ef1fc14e256d9974920e1d",
+      "run7_sha256": "f0a94bf91ffac11dafe0bf43dce4f0173e5c23d1f3ef1fc14e256d9974920e1d",
+      "equal": true
+    },
+    "evidence/ffmpeg-config.mak": {
+      "run6_sha256": "9ad37aa1c9f0ccaa7f86724530db7c3bfa64c4265cb5ccb457c2601efc76a62d",
+      "run7_sha256": "9ad37aa1c9f0ccaa7f86724530db7c3bfa64c4265cb5ccb457c2601efc76a62d",
+      "equal": true
+    },
+    "evidence/mpv-iconv-discovery.json": {
+      "run6_sha256": "b2a507111f417978873478ce73a7a34d135e73c0063d9c0d0fd20be9d22c82e5",
+      "run7_sha256": "b2a507111f417978873478ce73a7a34d135e73c0063d9c0d0fd20be9d22c82e5",
+      "equal": true
+    },
+    "evidence/iconv-meson-preflight.json": {
+      "run6_sha256": "541eacdf06c035d1acf9331f0facc9fbe3cc8a510ca53ba24d0fcc59cafb3e2e",
+      "run7_sha256": "541eacdf06c035d1acf9331f0facc9fbe3cc8a510ca53ba24d0fcc59cafb3e2e",
+      "equal": true
+    },
+    "evidence/libmpv.map": {
+      "run6_sha256": "a0dc0efdbb963d639aec785145e70423a1a2481ee94a850742455882548a3721",
+      "run7_sha256": "a0dc0efdbb963d639aec785145e70423a1a2481ee94a850742455882548a3721",
+      "equal": true
+    },
+    "recipe/build.sh": {
+      "run6_sha256": "36a6136373ea78300b08e50d2f8d5cc9abb645b7eb476d1bb30d6accd5ee4f46",
+      "run7_sha256": "36a6136373ea78300b08e50d2f8d5cc9abb645b7eb476d1bb30d6accd5ee4f46",
+      "equal": true
+    },
+    "recipe/cross.meson": {
+      "run6_sha256": "c180e05fe7a0f3c587ae92b1a9341eab54c2a9f8fc164c5906e49042e36f081d",
+      "run7_sha256": "c180e05fe7a0f3c587ae92b1a9341eab54c2a9f8fc164c5906e49042e36f081d",
+      "equal": true
+    },
+    "recipe/sources.py": {
+      "run6_sha256": "cba9aad7b2d43af5980e806f91fd246c6254dc88074440a272a44736b80314bb",
+      "run7_sha256": "cba9aad7b2d43af5980e806f91fd246c6254dc88074440a272a44736b80314bb",
+      "equal": true
+    }
+  },
+  "verified_source_archives": {
+    "archives/dav1d.tar.gz": "d4956d2a926011e242659e0d0e21b0213d61e14e853fa5585a8b79b2a0f115ba",
+    "archives/fast-float.tar.gz": "2b132274539286e41f37857cac22aa8441d21bd86d55de825a3342b149f66801",
+    "archives/ffmpeg.tar.gz": "d9090aa589f24e1d2aa730b7955d105d5f79ad12f0c7dd6323f10e58538b7b24",
+    "archives/ffnvcodec.tar.gz": "ea251ed884765b7523e0f4fa814dfd9acd7b5dcc43878cad744b77a46b429e48",
+    "archives/freetype.tar.gz": "e9d4680f9d751add3571e5407f2943a18ece9c02a78e1bb456aae305254d8bc9",
+    "archives/fribidi.tar.gz": "2501e74cd7a630f3711da529e8c983582648bb8da0eceb52e000ce6a68bde463",
+    "archives/glad.tar.gz": "33dbeae44d8315ece57e14eba4b1b4a02ac5406d1c4f49cd20048c91522a6b9a",
+    "archives/glslang.tar.gz": "907174a24713c6202c146f164bf81783f1fbc79c8cb821a30f18f159eb980312",
+    "archives/graphengine.tar.gz": "663bc958094280e3dabfa76a408296a51f5222f56115fd7782eae737edeaa179",
+    "archives/harfbuzz.tar.gz": "7c24de123b8f3201a164816d27703662cebd1b416845e71165006cd70fb14a0f",
+    "archives/jinja.tar.gz": "b88a20dcc2e34072fcf4159325bc6c34cd4b29a81a8b83d15d2f28ba561da296",
+    "archives/lcms2.tar.gz": "84f48112ddca86f77f4495d29464c5dd9e24ac080979fbe6e0fa6d3ffcc0ae43",
+    "archives/libass.tar.gz": "edb3e866ca9394152484bc9a83b68a395f5c9052ae0dc502e4100035c250330b",
+    "archives/libiconv.tar.gz": "3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8",
+    "archives/libplacebo.tar.gz": "696ba3cc9608d2f6116b1eb217d6c974a7d7db52dbb5a2525632d0002d473be5",
+    "archives/luajit.tar.gz": "15625df3ebfbd1f76371005bffae39b84c65e718e57acc9a9c57863c7c101541",
+    "archives/markupsafe.tar.gz": "da7c010c9c81a66ac73036558c1fcb6212b50482f43211cd1254035b94f82414",
+    "archives/mpv.tar.gz": "f616394c104e4caf975bde1830336385c17596cdc94a2434d5dd132a5aa4a201",
+    "archives/shaderc.tar.gz": "4a2451e747e011695d25847e75316722df80120b3f141600c43c9f5cedd70578",
+    "archives/spirv-cross.tar.gz": "b99db6ee6182dbeb102257e755bf6d4978c23dcfd3329033304779279bc27212",
+    "archives/spirv-headers.tar.gz": "392f4801409aad9c4f1b77745f179952fd6264e4c8bd0fc1bc45dfa6807bf6d0",
+    "archives/spirv-tools.tar.gz": "82c62146083fd558735a3171cf97cfc47903ca7d368482e87f94bd44883c0f00",
+    "archives/vulkan-headers.tar.gz": "75967a8288ff16044a86d1af462b96d2e75c435937efb75f2bb4102ab0382f29",
+    "archives/zimg.tar.gz": "539495d51fcd8c7ef9b89a611454e0c1173d18e8d4e743efdef67c4aa7e40d4f",
+    "archives/zlib.tar.gz": "cafa75b907cd067b471fba32a2772c010a859086241ef70d3d57eda6aeea3a64"
+  },
+  "extracted_prefix_archive_member_counts": {
+    "libass.a": 30,
+    "libavcodec.a": 1106,
+    "libavfilter.a": 413,
+    "libavformat.a": 553,
+    "libavutil.a": 98,
+    "libdav1d.a": 86,
+    "libfreetype.a": 28,
+    "libfribidi.a": 9,
+    "libharfbuzz.a": 51,
+    "libiconv.a": 2,
+    "liblcms2.a": 21,
+    "libluajit-5.1.a": 2,
+    "libplacebo.a": 51,
+    "libshaderc_combined.a": 243,
+    "libspirv-cross-c.a": 1,
+    "libspirv-cross-core.a": 4,
+    "libspirv-cross-glsl.a": 1,
+    "libspirv-cross-hlsl.a": 1,
+    "libspirv-cross-msl.a": 1,
+    "libspirv-cross-reflect.a": 1,
+    "libswresample.a": 13,
+    "libswscale.a": 40,
+    "libz.a": 10,
+    "libzimg.a": 50
+  },
+  "runtime_manifest_verified": true,
+  "lgpl_exclusions_verified": true,
+  "source_bundle_sha256": "1f111a4752d2b7ebf20801d7c5c04fcf045ddf614c2264c5740fb953711df555",
+  "build_artifact_sha256": "bc90ca6313e853ee30e97fb3ecdb096e9590c197c35fc9ac3754238cb9e0eb23",
+  "smoke_artifact_sha256": "07ab3b5c5e1063eead3ac2777f163253d45aec0752d0260481ea2fbb569831a0",
+  "windows_smoke_success": true,
+  "windows_smoke_checks": 50,
+  "native_pyav_evidence_reused_by_identical_dll_hash": true,
+  "scope": "Bit-identical DLL and runtime manifest from two fresh jobs using the fixed toolchain; source bundle/documentation changed with the test correction. No R5 equivalence or legal compliance certification.",
+  "vulkan_compiled": false,
+  "synthetic_fixtures_sha256": {
+    "CI MPEG4/AAC": "525b71890d4a882ad6e900b3ea43ac66c5c783be3aa28779997d4d0e10df2382",
+    "native H264/AAC": "839c52dd5aa2887fdcb08c5a4b9579abb6d896b5e736d9f6ea1e8455bfb87492"
+  }
+}

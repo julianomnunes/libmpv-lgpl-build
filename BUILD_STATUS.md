@@ -4,12 +4,12 @@ Initial budget: three executions, followed by the completed authorization for
 runs 4 and 5. Current authorization: **at most two new executions, 6 and 7**, no
 reruns. Manual dispatch only. All previous attempt records below are preserved.
 
-Current state: run 6 produced a verified DLL; its Windows smoke failed at a
-raw EOF back-step. That same failure was reproduced with R5. The corrected
-probe tests the existing safe-seek/controlled-frame EOF protocol and passed
-locally using the preserved run 6 DLL and R5. WASAPI/D3D11VA and both PyAV load
-orders passed. Run 7 remains the only authorized execution, with no rerun.
-Vulkan remains a blocking R5-equivalence issue; no legal approval is claimed.
+Current state: **run 7 passed build and Windows smoke (50 checks)**. The DLL
+is byte-identical to the clean build 6; WASAPI/D3D11VA and both PyAV load orders
+passed locally with those exact bytes. The run 6 failure was in the EOF test
+protocol and is preserved. Budget exhausted: seven first-attempt executions,
+no reruns. **Vulkan/R5 equivalence remains blocked; no legal conformity or
+distribution approval is claimed.**
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -19,6 +19,7 @@ Vulkan remains a blocking R5-equivalence issue; no legal approval is claimed.
 | 4 | Source hashes passed; the registry returned `manifest unknown` for the original fixed tool image. Compilation did not start, so the LuaJIT correction was not exercised. | [40366278253](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40366278253) |
 | 5 | Exact image recovered and verified; initial LuaJIT ELF/COFF preflight passed; dependencies and FFmpeg compiled. MPV still failed at static iconv discovery. No DLL; Windows job skipped. | [40367529330](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40367529330) |
 | 6 | Build passed, including the initial static iconv preflight and final static link. Windows smoke failed at raw EOF back-step; the identical failure was reproduced with R5. DLL and both artifacts preserved and verified; corrected local smoke passed without rebuilding. | [40378862793](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40378862793) |
+| 7 | Clean build and corrected Windows smoke passed (50 checks). DLL, FFmpeg tool, runtime manifest, link map and source/license manifest are byte-identical to build 6. Vulkan remains absent and blocking. | [40401417585](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40401417585) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -228,3 +229,71 @@ D3D11/default pass does not replace that missing fallback. Vulkan remains
 blocking until restored or adequately justified. The build recipe, dependency
 locks and compiler options are unchanged for run 7: it will be a fresh compile
 plus the corrected smoke, not a rerun of run 6, to compare the exact DLL hashes.
+
+
+## Final result after run 7 — budget exhausted
+
+[Reproducibility evidence](evidence/run6-run7-reproducibility.json) verifies
+byte-for-byte equality of the two DLLs, not only equal reported versions:
+55,753,216 bytes, SHA-256
+`0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1`.
+Both jobs built a fresh prefix from the 25 hash-locked archives, without network
+during compilation, using the same recovered OCI image. The compiler runtime
+hashes, source/license manifest, link map, build configuration, iconv preflight,
+FFmpeg fixture tool and complete runtime SHA256SUMS also match. Documentation
+and the corrected test probe changed, so the corresponding-source bundle and
+artifact ZIP hashes differ as expected; no whole-ZIP reproducibility is claimed.
+
+- [Build 7 DLL, sources and notices](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40401417585/artifacts/12690831723): SHA-256 `bc90ca6313e853ee30e97fb3ecdb096e9590c197c35fc9ac3754238cb9e0eb23`.
+- [Windows smoke 7](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40401417585/artifacts/12690840825): SHA-256 `07ab3b5c5e1063eead3ac2777f163253d45aec0752d0260481ea2fbb569831a0`.
+- Build 7 corresponding-source tarball: SHA-256 `1f111a4752d2b7ebf20801d7c5c04fcf045ddf614c2264c5740fb953711df555`.
+
+[Windows CI report](evidence/run7-windows-smoke.json) passed all 50 checks with
+software D3D11/WARP and null audio on Windows 2025/Python 3.12. Native isolated
+Windows/Python 3.14.7 checks used the **same verified DLL hash**:
+[summary](evidence/run6-native-summary.json),
+[PyAV first](evidence/run6-native-wasapi-pyav-first.json),
+[PyAV last](evidence/run6-native-wasapi-pyav-last.json).
+Playback, WASAPI initialization, pause, exact/keyframe seeks, frame steps,
+native reverse away from EOF, safe-seek recovery to the penultimate PTS,
+controlled reverse frames after EOF and PNG capture/load passed on D3D11.
+PyAV 18.1.0/FFmpeg 9.0.2 LGPL read metadata, decoded 240,000 audio samples and
+recovered the last video PTS (4.966667 s). The seven loaded FFmpeg DLLs have
+the approved environment's hashes; core runtime license APIs report LGPLv3+,
+and no x264/x265 DLL was loaded. libmpv's FFmpeg is linked internally rather
+than resolving those PyAV DLLs. These results are reused by byte identity,
+without a redundant native replay of build 7.
+
+The native default path was D3D11/D3D11VA for both the candidate and R5. The
+OpenGL/NVDEC reverse test stalled at 3 s in both DLLs; it remains a recorded
+limitation, not a passed path. The R5 Vulkan probe exceeded the isolated
+75-second limit even with a serviced host HWND:
+[timeout record](evidence/run6-native-r5-vulkan-timeout.json). That result is
+inconclusive and does not justify deleting Vulkan. The candidate explicitly
+rejects Vulkan and records HAVE_VULKAN=0. Source confirms that its omission
+removes a Windows fallback after D3D11. **R5 equivalence is therefore not
+approved.** Restoring it requires enabling Vulkan in libplacebo and MPV,
+supplying a traceable Vulkan loader/import dependency (MPV requires >=1.4.309),
+recording its notices, and validating that revised DLL and clean reproduction.
+No such build is authorized or started. These probes also do not establish
+audible synchronization, visual acceptance or a full application regression.
+
+Licensing engineering checks passed for the produced bytes: MPV GPL disabled,
+FFmpeg GPL/nonfree/version3 disabled, required static iconv present, no forbidden
+GPL/inherited archive in the link map, all 25 original source archives verified,
+and 88 notice files preserved. The map records the actually extracted archive
+members separately from link inputs. The intended combined grant is LGPLv3+;
+original component notices and obligations remain. As detailed in
+[REDISTRIBUTION.md](REDISTRIBUTION.md), durable source delivery, final application
+terms/library replacement rights and exact MinGW runtime notice/source
+association remain to be settled. The compiler image and runtime bytes are
+fixed, but the temporal MinGW source association is not proof of rebuilding
+that toolchain. Its legal significance needs review; no legal approval is inferred.
+
+[CI ledger](evidence/final-ci-runs.json): exactly seven runs, all attempt 1;
+run 7 took 26 min 48 s including smoke. The workflow only permits builds 6/7
+and rejects reruns. Both downloaded ZIP pairs and extracted DLL/source/log
+evidence remain outside the application checkout. [Preservation check](evidence/original-preservation-final.json)
+confirmed all seven original fingerprints and the preexisting Git status
+unchanged, including the crash report and R5. No application code/private media
+was uploaded; no application integration, release or 11E work was performed.

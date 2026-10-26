@@ -1,0 +1,11 @@
+{
+  "dll_sha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+  "probe_sha256": "423c3b7d5e33993950031c0a47f7b911dd215664c450c3e1201a389760f9b110",
+  "result": {
+    "case": "r5-vulkan",
+    "success": false,
+    "error": "PROCESS TIMEOUT (75s); child killed"
+  },
+  "classification": "Inconclusive isolated Vulkan probe; no equivalence approval. Child process exceeded 75 seconds and was killed by the disposable runner.",
+  "scope": "Only a synthetic fixture and the original DLL were used; the application was not started."
+}

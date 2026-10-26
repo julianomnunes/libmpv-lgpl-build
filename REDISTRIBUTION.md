@@ -5,6 +5,13 @@ Do not redistribute only the DLL while discarding its corresponding source and
 notices. Source licenses in the archives include files excluded from this build;
 the configuration and link map identify the actual runtime combination.
 
+The exact candidate DLL is now reproduced byte-for-byte by clean builds 6/7:
+SHA-256 `0eda750efb1b71136f66bf5acd74370bcb27f99ef0b14dffef0ae62700e0ecc1`.
+[Verification](evidence/run6-run7-reproducibility.json) binds those bytes to the
+25 preserved source archives, build configuration, final archive-member/link
+map and source/license manifest. It verifies the GPL exclusions technically;
+it does not approve an application's legal terms or final distribution.
+
 The intended distribution license of the combined DLL is LGPL-3.0-or-later,
 selected from the LGPL-2.1-or-later grants of mpv, libplacebo, FFmpeg, FriBidi
 and libiconv. Original source notices are retained. The Apache-2.0 components'

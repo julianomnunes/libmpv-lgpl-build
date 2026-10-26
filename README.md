@@ -1,11 +1,11 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: run 6 produced a DLL; the final clean build 7 is reserved.**
-The Windows smoke failure was reproduced with R5 and diagnosed as an incorrect
-EOF test protocol. The corrected probe passed on the preserved DLL, including
-WASAPI and both PyAV load orders. Vulkan/R5 equivalence and redistribution
-approval remain open. The earlier attempt records and failing evidence remain
-preserved.
+**Current result: clean builds 6 and 7 produced an identical DLL; run 7 passed all 50 Windows smoke checks.**
+The EOF harness correction was validated against the preserved DLL and R5.
+Native WASAPI/D3D11VA and both PyAV load orders passed with the exact same DLL
+bytes. All seven executions are first attempts; the authorized budget is spent.
+**Vulkan/R5 equivalence remains blocked and redistribution is not approved.**
+The earlier failures, original DLLs and source/license evidence are preserved.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
