@@ -1,6 +1,8 @@
 # Bounded build evidence
 
-Maximum: three build workflow executions. Manual dispatch only; no reruns.
+Initial budget: three build workflow executions. Authorized continuation:
+**at most two additional executions, numbered 4 and 5**. Manual dispatch only;
+no reruns. The original attempt records below are preserved.
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -29,7 +31,7 @@ GPL-only and is disabled while modern D3D11 remains enabled. No application
 option is changed. The PC metadata version of SPIRV-Cross is derived from its
 actual source instead of a placeholder. Run 3 is the final allowed execution.
 
-## Final stop and exact remaining work
+## Initial stop after run 3 and exact remaining work
 
 Budget exhausted: **3/3 executions**, no reruns, no release, no application
 integration. No successful libmpv artifact or binary reproducibility result.
@@ -67,3 +69,27 @@ Sources and primary notices are locked and preserved, but conformity of an exact
 new DLL cannot be asserted without that binary, its completed link evidence and
 the remaining checks. The existing approved binary's status is not changed by
 this failed experiment.
+
+## Authorized continuation: runs 4 and 5
+
+The reviewed correction leaves generic `LDFLAGS`, `HOST_LDFLAGS` and
+`HOST_XLDFLAGS` empty for the LuaJIT make invocation. Windows flags are passed
+only through `TARGET_LDFLAGS` and `TARGET_SHLDFLAGS`, which feed the target link
+rules rather than `host/minilua`. Host C flags and target C flags remain
+separate. This follows the exact rules of the pinned LuaJIT Makefile, not a
+change to its source. The shell recipe is syntax-checked before dispatch.
+
+LuaJIT now builds before zlib/iconv and the long dependency/FFmpeg chain. The
+initial stage verifies the Linux ELF host tool, the Windows x64 COFF object,
+and the installed static archive, retaining hashes and format evidence. Run 4
+is dispatched only after reviewing this correction. Run 5 is reserved for a
+clean reproduction or a newly diagnosed blocker; a sixth run and all reruns
+are outside authorization.
+
+Vulkan remains disabled in this candidate. Source review at MPV `baa3e11d`
+shows Windows `vo=gpu` auto-probing D3D11 first, then Vulkan, then OpenGL
+(`video/out/gpu/context.c`). Omitting Vulkan therefore removes an available
+fallback; it does not establish equivalence to R5. If a DLL is produced, native
+Windows tests must record actual selected graphics/hardware-decoding paths,
+exercise the required functions and compare the available paths with the R5
+configuration before drawing a scoped conclusion.

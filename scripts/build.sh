@@ -36,6 +36,35 @@ cp scripts/cross.meson scripts/toolchain.cmake dist/evidence/
 python3 scripts/sources.py
 python3 scripts/sources.py --collect
 
+# Fail before rebuilding FFmpeg or any of its runtime dependencies. LuaJIT
+# shares generic LDFLAGS between host/minilua and the Windows target, so the
+# generic/host flags must be empty and PE flags must be target-only.
+echo '::group::Initial LuaJIT host/target preflight'
+(cd sources/luajit && sed -i '/^Libs.private/d' etc/luajit.pc && \
+  make TARGET_SYS=Windows PREFIX="$PREFIX" HOST_CC=gcc CFLAGS='-O2 -pipe' \
+  CROSS=x86_64-w64-mingw32- TARGET_CFLAGS="$CFLAGS" \
+  LDFLAGS= HOST_LDFLAGS= HOST_XLDFLAGS= \
+  TARGET_LDFLAGS="$LDFLAGS" TARGET_SHLDFLAGS="$LDFLAGS" BUILDMODE=static \
+  XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT FILE_T=luajit.exe INSTALL_DEP=src/luajit.exe amalg install)
+x86_64-w64-mingw32-objdump -f sources/luajit/src/ljamalg.o > dist/evidence/luajit-target-object.txt
+grep -Eq 'file format pe(-bigobj)?-x86-64' dist/evidence/luajit-target-object.txt
+python3 - <<'PY'
+import hashlib, json
+from pathlib import Path
+host = Path('sources/luajit/src/host/minilua')
+target = Path('prefix/lib/libluajit-5.1.a')
+assert host.read_bytes()[:4] == b'\x7fELF', 'LuaJIT host tool must be Linux ELF'
+assert target.stat().st_size > 0, 'LuaJIT target archive missing'
+Path('dist/evidence/luajit-preflight.json').write_text(json.dumps({
+    'host_format': 'ELF', 'target_format': 'COFF x86_64 (objdump verified)',
+    'host_sha256': hashlib.sha256(host.read_bytes()).hexdigest(),
+    'target_archive_sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
+    'generic_ldflags': '', 'host_ldflags': '',
+    'target_pe_timestamp_flag': '--no-insert-timestamp',
+}, indent=2) + '\n')
+PY
+echo '::endgroup::'
+
 meson_static() {
     local name=$1; shift
     meson setup "builds/$name" "sources/$name" --cross-file scripts/cross.meson \
@@ -63,10 +92,6 @@ int main(void) { return iconv_open("UTF-8", "UTF-8") == (iconv_t)-1; }
 EOF
 "$CXX" $CXXFLAGS $LDFLAGS dist/evidence/iconv-link-probe.c -liconv -o builds/iconv-link-probe.exe
 make -C sources/ffnvcodec PREFIX="$PREFIX" install
-(cd sources/luajit && sed -i '/^Libs.private/d' etc/luajit.pc && \
-  make TARGET_SYS=Windows PREFIX="$PREFIX" HOST_CC=gcc CFLAGS='-O2 -pipe' \
-  CROSS=x86_64-w64-mingw32- TARGET_CFLAGS="$CFLAGS" BUILDMODE=static \
-  XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT FILE_T=luajit.exe INSTALL_DEP=src/luajit.exe amalg install)
 meson_static dav1d -Denable_tools=false -Denable_tests=false -Denable_examples=false -Denable_docs=false -Denable_asm=true
 cmake_static freetype -DFT_DISABLE_ZLIB=TRUE -DFT_DISABLE_BZIP2=TRUE -DFT_DISABLE_PNG=TRUE -DFT_DISABLE_HARFBUZZ=TRUE -DFT_DISABLE_BROTLI=TRUE
 meson_static fribidi -Dbin=false -Ddocs=false -Dtests=false

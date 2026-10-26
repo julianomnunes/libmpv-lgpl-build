@@ -1,6 +1,7 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: no DLL produced. The three-execution budget is exhausted.**
+**Current result: no DLL produced yet. Continuation authorizes runs 4 and 5 only,
+without reruns; the original three failures remain documented.**
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
@@ -37,7 +38,7 @@ Use a clean directory for each rebuild. Sources, compiler image, build paths,
 timestamp and PE linker timestamp policy are fixed. Reproducibility is an
 empirical result only after independent clean builds produce the same DLL hash.
 The CI is manual-only, uses standard public hosted runners, has a 90-minute
-build timeout and refuses a fourth workflow execution or a rerun.
+build timeout and now authorizes only workflow executions 4 and 5, with no rerun.
 
 Artifacts include the DLL/headers, notices, original source archives, recipe,
 configuration, link map, PE imports and test evidence. `test-tools/ffmpeg.exe`
