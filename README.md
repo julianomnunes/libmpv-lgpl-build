@@ -1,5 +1,9 @@
 # Isolated Windows x64 libmpv build
 
+**Current result: no DLL produced. The three-execution budget is exhausted.**
+See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
+remaining work. The recipe is experimental and is not ready for redistribution.
+
 Experimental, source-locked build of libmpv at mpv commit
 `baa3e11d42cb7978da634a8a6a3a55fe074d01be`. No application source or user media
 is included. Nothing here is a release or a certification of legal compliance.

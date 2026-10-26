@@ -6,6 +6,7 @@ Maximum: three build workflow executions. Manual dispatch only; no reruns.
 | --- | --- | --- |
 | 1 | Failed: zimg source snapshot omitted its required graphengine submodule. Preceding libraries compiled. | [40354512350](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40354512350) |
 | 2 | Runtime dependencies and FFmpeg compiled. MPV configuration failed to locate iconv because the explicit linker arguments omitted the new prefix library search path. | [40355969742](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40355969742) |
+| 3 | The early iconv C++ link check passed. LuaJIT's Linux host/minilua link inherited the Windows-only `--no-insert-timestamp` flag and failed. No DLL was produced. | [40360933569](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40360933569) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -27,3 +28,42 @@ Lua, so the matching pinned LuaJIT revision is restored; legacy `direct3d` is
 GPL-only and is disabled while modern D3D11 remains enabled. No application
 option is changed. The PC metadata version of SPIRV-Cross is derived from its
 actual source instead of a placeholder. Run 3 is the final allowed execution.
+
+## Final stop and exact remaining work
+
+Budget exhausted: **3/3 executions**, no reruns, no release, no application
+integration. No successful libmpv artifact or binary reproducibility result.
+
+The final failure is in the recipe's separation of Linux host-tool and Windows
+target flags. LuaJIT's `src/Makefile:192` defines `LDOPTIONS` using generic
+`LDFLAGS`, and `HOST_ALDFLAGS` incorporates it. The Linux linker rejects the PE
+timestamp option at `host/minilua`. A localized next correction is to pass empty
+generic `LDFLAGS` to this make invocation and put the Windows flags into
+`TARGET_LDFLAGS` (and target shared flags if used). No fourth execution was
+started and this proposed correction has not been compiled or validated.
+
+At least one further successful build and native Windows tests are needed for a
+functional candidate. Run 2's complete dependency/FFmpeg compilation took about
+25 minutes on the standard runner. A separate successful clean rebuild would
+then be needed to demonstrate bit-for-bit DLL reproducibility. Additional
+errors beyond the current failure remain possible because the final DLL link
+has never completed.
+
+The isolated test environment was installed from the public explicit lock:
+Python 3.14.7, av 18.1.0 `py314hc59ccdc_1`, FFmpeg 9.0.2
+`lgpl_haba0ffa_805`. [Environment evidence](evidence/pyav-environment.json)
+records the seven actually loaded FFmpeg DLL hashes, their LGPLv3-or-later
+runtime declarations, `--disable-gpl` configurations and absence of x264/x265/
+FFTW packages and DLLs. This validates the test environment only. Playback,
+WASAPI, pause, seek/scrub, stepping, reverse/EOF, preview and coexistence with the
+new libmpv were **not run** because no new DLL exists.
+
+Diagnostic artifacts (no redistributable runtime DLL):
+
+- [Build 2 diagnostics](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40355969742/artifacts/12668290091), SHA-256 `a14a518e2ecdd352f3bef989cda2817327e8bf2b11b25459d8db522a9caccd5f`.
+- [Build 3 diagnostics](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40360933569/artifacts/12666469915), SHA-256 `4faf6274b49c27594ae19d4b043b17748c4fc7166d7269d2973dfee325e607ba`.
+
+Sources and primary notices are locked and preserved, but conformity of an exact
+new DLL cannot be asserted without that binary, its completed link evidence and
+the remaining checks. The existing approved binary's status is not changed by
+this failed experiment.
