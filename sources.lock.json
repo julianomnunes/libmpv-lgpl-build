@@ -207,6 +207,15 @@
       "license": "LGPL-2.1-or-later (library); GPL-3.0-or-later (tools, not shipped)",
       "url": "https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz",
       "sha256": "3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8"
+    },
+    {
+      "name": "graphengine",
+      "repo": "sekrit-twc/graphengine",
+      "commit": "cb5b2ce13384ec2491f0c37256ea210034799f69",
+      "license": "WTFPL",
+      "path": "zimg/graphengine",
+      "url": "https://codeload.github.com/sekrit-twc/graphengine/tar.gz/cb5b2ce13384ec2491f0c37256ea210034799f69",
+      "sha256": "663bc958094280e3dabfa76a408296a51f5222f56115fd7782eae737edeaa179"
     }
   ]
 }

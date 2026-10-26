@@ -43,6 +43,13 @@ def fetch(item, refresh):
 def collect(lock):
     destination = ROOT / 'dist' / 'notices'
     destination.mkdir(parents=True, exist_ok=True)
+    for item in json.loads((ROOT / 'toolchain-notices' / 'manifest.json').read_text()):
+        source = ROOT / 'toolchain-notices' / item['file']
+        if hashlib.sha256(source.read_bytes()).hexdigest() != item['sha256']:
+            raise RuntimeError('Toolchain notice hash mismatch: ' + item['file'])
+        target = destination / 'compiler-runtime' / item['file']
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
     summary = []
     for item in lock['sources']:
         source = ROOT / 'sources' / item.get('path', item['name'])

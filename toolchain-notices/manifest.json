@@ -1,0 +1,51 @@
+[
+  {
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "source_commit": "78d4ac73dd391005b895a6148cd9831e28e1208b",
+    "component": "GCC 16.2.0 compiler runtime",
+    "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/78d4ac73dd391005b895a6148cd9831e28e1208b/COPYING3",
+    "file": "COPYING3"
+  },
+  {
+    "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+    "source_commit": "78d4ac73dd391005b895a6148cd9831e28e1208b",
+    "component": "GCC 16.2.0 compiler runtime",
+    "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/78d4ac73dd391005b895a6148cd9831e28e1208b/COPYING.RUNTIME",
+    "file": "COPYING.RUNTIME"
+  },
+  {
+    "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+    "source_commit": "57b595039040eaa15bece85b7cc71d952281b269",
+    "component": "MinGW-w64 runtime",
+    "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/57b595039040eaa15bece85b7cc71d952281b269/COPYING",
+    "file": "mingw-COPYING"
+  },
+  {
+    "sha256": "8f308316e7a94b8410f871868bd3948f126526dc1775aeee97a0e365f9a0fd9f",
+    "source_commit": "57b595039040eaa15bece85b7cc71d952281b269",
+    "component": "MinGW-w64 runtime",
+    "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/57b595039040eaa15bece85b7cc71d952281b269/AUTHORS",
+    "file": "mingw-AUTHORS"
+  },
+  {
+    "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+    "source_commit": "57b595039040eaa15bece85b7cc71d952281b269",
+    "component": "MinGW-w64 runtime",
+    "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/57b595039040eaa15bece85b7cc71d952281b269/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt",
+    "file": "mingw-COPYING.MinGW-w64-runtime-COPYING.MinGW-w64-runtime.txt"
+  },
+  {
+    "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+    "source_commit": "57b595039040eaa15bece85b7cc71d952281b269",
+    "component": "MinGW-w64 runtime",
+    "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/57b595039040eaa15bece85b7cc71d952281b269/COPYING.MinGW-w64/COPYING.MinGW-w64.txt",
+    "file": "mingw-COPYING.MinGW-w64-COPYING.MinGW-w64.txt"
+  },
+  {
+    "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+    "source_commit": "57b595039040eaa15bece85b7cc71d952281b269",
+    "component": "MinGW-w64 runtime",
+    "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/57b595039040eaa15bece85b7cc71d952281b269/mingw-w64-libraries/winpthreads/COPYING",
+    "file": "mingw-mingw-w64-libraries-winpthreads-COPYING"
+  }
+]

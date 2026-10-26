@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd /work
-mkdir -p dist/evidence builds prefix
+mkdir -p dist/evidence dist/notices builds prefix
 exec > >(tee dist/evidence/build.log) 2>&1
 trap 'find builds -name meson-log.txt -o -name config.log | while read -r f; do mkdir -p "dist/evidence/$(dirname "$f")"; cp "$f" "dist/evidence/$f"; done' EXIT
 
@@ -24,6 +24,12 @@ unset FF_CONFIGURE FF_CFLAGS FF_CXXFLAGS FF_LIBS FF_LDFLAGS FF_LDEXEFLAGS
 JOBS=4
 { "$CC" -v; "$CXX" -v; meson --version; cmake --version; ninja --version; nasm -v; } > dist/evidence/tool-versions.txt 2>&1
 cp sources.lock.json dist/
+cp -r toolchain-notices dist/notices/compiler-runtime
+cp upstream-origin.json dist/evidence/
+for runtime in libgcc.a libgcc_eh.a libstdc++.a libwinpthread.a libmingwex.a libmingw32.a crtbegin.o crtend.o; do
+  path=$("$CC" -print-file-name="$runtime")
+  if [[ -f "$path" ]]; then sha256sum "$path"; else echo "$runtime: not found"; fi
+done > dist/evidence/compiler-runtime-hashes.txt
 cp /cross.meson /toolchain.cmake dist/evidence/
 cp scripts/cross.meson scripts/toolchain.cmake dist/evidence/
 
@@ -110,6 +116,7 @@ cp builds/ffmpeg/config.h builds/ffmpeg/config_components.h dist/evidence/
 cp builds/ffmpeg/ffbuild/config.mak dist/evidence/ffmpeg-config.mak
 
 export MPV_VERSION=v0.41.0-dev-gbaa3e11d4-controlled-lgpl
+printf '0.41.0-dev-gbaa3e11d4-controlled-lgpl\n' > sources/mpv/MPV_VERSION
 meson setup builds/mpv sources/mpv --cross-file scripts/cross.meson \
   --prefix="$PREFIX" --libdir=lib --buildtype=release --default-library=shared --prefer-static \
   --wrap-mode=nodownload --auto-features=disabled -Dgpl=false -Dlibmpv=true -Dcplayer=false \
@@ -136,8 +143,10 @@ if grep -Ei '/opt/(ffbuild|upstream-libraries-disabled)|lib(x264|x265|fftw|chrom
   echo 'Forbidden inherited/GPL dependency detected in link map'; exit 1
 fi
 cp README.md REDISTRIBUTION.md sources.lock.json dist/
+cp sources/ffmpeg/COPYING.LGPLv3 sources/ffmpeg/COPYING.GPLv3 dist/
+cp sources/mpv/Copyright dist/MPV-Copyright.txt
 cp -r scripts dist/recipe
 python3 scripts/sources.py --collect
 (cd dist && find runtime test-tools -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
 tar --sort=name --mtime="@$SOURCE_DATE_EPOCH" --owner=0 --group=0 --numeric-owner -czf dist/corresponding-sources.tar.gz \
-  archives sources.lock.json scripts README.md REDISTRIBUTION.md
+  archives sources.lock.json scripts README.md REDISTRIBUTION.md toolchain-notices upstream-origin.json

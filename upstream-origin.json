@@ -1,0 +1,18 @@
+{
+  "upstream_mpv_commit": "baa3e11d42cb7978da634a8a6a3a55fe074d01be",
+  "upstream_run": 40141553607,
+  "upstream_job": 121014180339,
+  "upstream_job_url": "https://github.com/mpv-player/mpv/actions/runs/40141553607/job/121014180339",
+  "toolchain_image_digest": "sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a",
+  "approved_archive_sha256": "7a256440129b90a760ada9245e98c8f9181d23b4192a44901c913aa74e6a02a8",
+  "approved_dll_sha256": "bbb8bb09e4ffc93cd93430b620f40b09e086b7dc63f1651c8a1ce38853ed5169",
+  "internal_ffmpeg_commit": "9d9703e3b6f1e00e56b48067cbcf52a2fb808ee3",
+  "evidence_excerpt": [
+    "2026-10-24T23:20:38.6643163Z Digest: sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a",
+    "2026-10-24T23:21:51.4869076Z License: LGPL version 3 or later",
+    "2026-10-24T23:32:34.3606126Z C compiler for the host machine: x86_64-w64-mingw32-gcc (gcc 16.2.0 \"x86_64-w64-mingw32-gcc (crosstool-NG 1.29.0.7_b1a94f6) 16.2.0\")",
+    "2026-10-24T23:32:34.3615776Z Run-time dependency libplacebo found: YES 7.374.0",
+    "2026-10-24T23:32:34.3646845Z mujs| C compiler for the host machine: x86_64-w64-mingw32-gcc (gcc 16.2.0 \"x86_64-w64-mingw32-gcc (crosstool-NG 1.29.0.7_b1a94f6) 16.2.0\")",
+    "2026-10-24T23:34:07.8384879Z SHA256 digest of uploaded artifact is 7a256440129b90a760ada9245e98c8f9181d23b4192a44901c913aa74e6a02a8"
+  ]
+}

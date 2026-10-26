@@ -5,15 +5,19 @@ Do not redistribute only the DLL while discarding its corresponding source and
 notices. Source licenses in the archives include files excluded from this build;
 the configuration and link map identify the actual runtime combination.
 
-The selected mpv, libplacebo, FFmpeg, FriBidi and libiconv library sources permit
-LGPL-2.1-or-later builds under the selected flags. mpv uses `gpl=false`; FFmpeg
+The intended distribution license of the combined DLL is LGPL-3.0-or-later,
+selected from the LGPL-2.1-or-later grants of mpv, libplacebo, FFmpeg, FriBidi
+and libiconv. Original source notices are retained. The Apache-2.0 components'
+terms also remain applicable. Both LGPLv3 and its underlying GPLv3 text are
+supplied; supplying that GPL text is part of LGPLv3 and is not evidence of a
+GPL-only runtime dependency. mpv uses `gpl=false`; FFmpeg
 disables GPL, nonfree, version3 and external-library autodetection. FFmpeg uses
 native codecs plus dav1d/zlib and header-only nv-codec interfaces. x264/x265,
 Chromaprint/FFTW, and LittleCMS's GPL fastfloat/threaded plugins are excluded.
 
 Preserve upstream copyright notices, complete applicable license texts,
 disclaimers and any required attribution. FreeType is selected under its FTL:
-"Portions of this software are copyright (C) The FreeType Project
+"Portions of this software are copyright (C) 2026 The FreeType Project
 (www.freetype.org). All rights reserved."
 HarfBuzz, libass, dav1d, zlib, LittleCMS, zimg, shaderc, glslang, SPIRV-Tools,
 SPIRV-Headers, SPIRV-Cross and generated-code dependencies retain their upstream
@@ -32,8 +36,12 @@ license terms and the final packaging arrangement have not been reviewed here.
 The build image contains GCC/MinGW tools. Compiler runtime provenance is bound
 to that immutable image; GCC runtime libraries use the GCC Runtime Library
 Exception and MinGW runtime components have their own permissive notices.
-Those notice materials must be completed and verified against the actual link
-map before marking this evidence package ready for redistribution.
+The standard GCC 16.2.0 exception/license texts and MinGW-w64's collected runtime
+notices are preserved in `toolchain-notices`, with immutable source URLs and
+hashes. Actual compiler/runtime hashes and link map are captured during build.
+The image is not rebuilt here; its binary identity is fixed by OCI digest. The
+MinGW notice snapshot comes from the BtbN recipe revision preceding that image;
+this temporal association alone does not prove a source-to-toolchain rebuild.
 
 GitHub Actions artifacts expire. A future distributor must retain and supply
 the source/notice material for the legally required period; a moving upstream
