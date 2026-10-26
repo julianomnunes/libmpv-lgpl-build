@@ -1,0 +1,9 @@
+{
+  "host_format": "ELF",
+  "target_format": "COFF x86_64 (objdump verified)",
+  "host_sha256": "2fcb88d8234cae7ca090f3ce0cd996c47892f5589e3c5eadbc5fbadb70c94796",
+  "target_archive_sha256": "79c4827b93399d8c9ee79ac00d6231297b521173b88bcb4aeb64948355f9e5c7",
+  "generic_ldflags": "",
+  "host_ldflags": "",
+  "target_pe_timestamp_flag": "--no-insert-timestamp"
+}

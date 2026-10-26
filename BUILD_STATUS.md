@@ -4,12 +4,18 @@ Initial budget: three build workflow executions. Authorized continuation:
 **at most two additional executions, numbered 4 and 5**. Manual dispatch only;
 no reruns. The original attempt records below are preserved.
 
+Current state after run 5: **budget exhausted, no DLL**. LuaJIT host/target
+separation and exact image recovery are verified; MPV's static iconv discovery
+remains blocked. Windows operation tests and practical Vulkan comparison were
+not executed.
+
 | Run | Result | Evidence |
 | --- | --- | --- |
 | 1 | Failed: zimg source snapshot omitted its required graphengine submodule. Preceding libraries compiled. | [40354512350](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40354512350) |
 | 2 | Runtime dependencies and FFmpeg compiled. MPV configuration failed to locate iconv because the explicit linker arguments omitted the new prefix library search path. | [40355969742](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40355969742) |
 | 3 | The early iconv C++ link check passed. LuaJIT's Linux host/minilua link inherited the Windows-only `--no-insert-timestamp` flag and failed. No DLL was produced. | [40360933569](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40360933569) |
 | 4 | Source hashes passed; the registry returned `manifest unknown` for the original fixed tool image. Compilation did not start, so the LuaJIT correction was not exercised. | [40366278253](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40366278253) |
+| 5 | Exact image recovered and verified; initial LuaJIT ELF/COFF preflight passed; dependencies and FFmpeg compiled. MPV still failed at static iconv discovery. No DLL; Windows job skipped. | [40367529330](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40367529330) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -108,3 +114,46 @@ Docker archive layout and compressed-layer loading were checked against Moby
 No replacement image, new dependency revision or extra build execution is used.
 Only run 5 remains authorized. Upstream blob retention remains an availability
 limitation even if recovery succeeds.
+
+## Result after authorized run 5
+
+The LuaJIT correction is verified by [preflight evidence](evidence/run5-luajit-preflight.json):
+Linux ELF host/minilua and Windows x64 COFF target object were produced before
+other dependencies. The installed static archive SHA-256 is
+`79c4827b93399d8c9ee79ac00d6231297b521173b88bcb4aeb64948355f9e5c7`.
+[Recovery evidence](evidence/run5-toolchain-recovery.json) verifies all 17
+compressed and uncompressed layer hashes and the original Docker image/rootfs
+identity. There was no toolchain-version substitution.
+
+The remaining iconv failure is more specific than a missing `-L`: the explicit
+C++ link probe passes, libass's iconv detection passes, and MPV's command now
+contains `-L/work/prefix/lib`. Under `--prefer-static`, however, Meson 1.12.1's
+`IconvSystemDependency` calls `find_library` without extra directories; its
+static search uses the compiler's reported library directories, which omit the
+controlled prefix. The fast `-liconv` linker probe is used only for
+`PREFER_SHARED`. [Diagnostic excerpt and source references](evidence/run5-iconv-diagnosis.txt)
+show this distinction. The previous linker-path correction was insufficient.
+Any future correction must expose the controlled archive/directory explicitly
+to Meson's static dependency discovery, then be compiled and tested. No such
+additional correction or sixth build was attempted in this budget.
+
+[Run 5 diagnostic artifact](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40367529330/artifacts/12671938247),
+583,536 bytes, verified SHA-256
+`215fe6711b9c9fab21deecc7935b583a213faab1bbac4bcff1a97fab87dbf109`.
+It contains logs, source/license manifests, notices, toolchain and LuaJIT
+evidence, and FFmpeg configuration; it contains no redistributable libmpv DLL.
+FFmpeg's recorded GPL/nonfree/version3 flags are zero. There is no completed
+final link map, DLL hash or clean DLL reproduction to validate.
+
+The graphics probe now supports explicit API/context selection and records
+`current-gpu-context`; it was syntax-checked but not executed. Vulkan's omission
+removes a fallback in the pinned source's D3D11 -> Vulkan -> OpenGL selection
+order. Its practical effect versus R5, and the full required Windows operations
+and PyAV coexistence, remain untested because no candidate DLL exists. No
+functional-equivalence or legal-conformity conclusion follows from this run.
+
+The Roteirizador checkout, its preexisting local changes, crash report and R5
+executable/native DLLs were preserved; recorded file fingerprints were compared
+unchanged at the end. Only the isolated build repository was updated. No release,
+integration or 11E work was performed. Exactly five first-attempt workflow runs
+exist; no reruns or further execution were requested.

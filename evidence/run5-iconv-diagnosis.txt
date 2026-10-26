@@ -1,0 +1,38 @@
+Run 5: explicit iconv link succeeded earlier in the set -e recipe.
+MPV uses prefer_static=true; static SystemDependency discovery differs from the linker search path.
+
+Build started at 2026-10-26T17:42:11.115404
+Main binary: /usr/bin/python3
+Build Options: -Dbuildtype=release -Dprefix=/work/prefix -Dlibdir=lib -Ddefault_library=shared -Dprefer_static=true -Dwrap_mode=nodownload -Dauto_features=disabled -Dgpl=false -Dlibmpv=true -Dcplayer=false -Dbuild-date=false -Dtests=false -Dlua=luajit -Dgl=enabled -Dgl-win32=enabled -Dplain-gl=enabled -Dgl-dxinterop=enabled -Dgl-dxinterop-d3d9=enabled -Dd3d11=enabled -Ddirect3d=disabled -Dd3d-hwaccel=enabled -Dd3d9-hwaccel=enabled -Dcuda-hwaccel=enabled -Dcuda-interop=enabled -Dwasapi=enabled -Dwin32-threads=enabled -Dvector=enabled -Dshaderc=enabled -Dspirv-cross=enabled -Dlcms2=enabled -Dzimg=enabled -Dzlib=enabled -Diconv=enabled '-Dc_link_args=-L/work/prefix/lib -static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp -Wl,-Map,/work/dist/evidence/libmpv.map' '-Dcpp_link_args=-L/work/prefix/lib -static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp -Wl,-Map,/work/dist/evidence/libmpv.map' --cross-file=scripts/cross.meson
+Python system: Linux
+
+Final static lookup:
+Running compile:
+Working directory:  /work/builds/mpv/meson-private/tmp2s1i0k7h
+Code:
+
+        #include <stddef.h>
+        int main(void) { static int a[1-2*!(sizeof(void *) <= 8)]; a[0]=0; return 0; }
+-----------
+Command line: `x86_64-w64-mingw32-g++ -I/work/prefix/include /work/builds/mpv/meson-private/tmp2s1i0k7h/testfile.cpp -o /work/builds/mpv/meson-private/tmp2s1i0k7h/output.obj -c -O2 -g0 -ffile-prefix-map=/work=. -fno-ident -D_FILE_OFFSET_BITS=64 -O0 -U_FORTIFY_SOURCE -fpermissive` -> 0
+Running compile:
+Working directory:  /work/builds/mpv/meson-private/tmpfb6np_vx
+Code:
+
+-----------
+Command line: `x86_64-w64-mingw32-g++ -I/work/prefix/include /work/builds/mpv/meson-private/tmpfb6np_vx/testfile.cpp -o /work/builds/mpv/meson-private/tmpfb6np_vx/output.obj -c -O2 -g0 -ffile-prefix-map=/work=. -fno-ident -D_FILE_OFFSET_BITS=64 -O0 -U_FORTIFY_SOURCE -fpermissive --print-search-dirs` -> 0
+stdout:
+install: /opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/
+programs: =/opt/ct-ng/libexec/gcc/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/libexec/gcc/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/libexec/gcc/x86_64-w64-mingw32/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/
+libraries: =/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/:/opt/ct-ng/x86_64-w64-mingw32/sysroot/mingw/lib/x86_64-w64-mingw32/16.2.0/:/opt/ct-ng/x86_64-w64-mingw32/sysroot/mingw/lib/../lib/:/opt/ct-ng/lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/:/opt/ct-ng/x86_64-w64-mingw32/sysroot/mingw/lib/
+-----------
+Run-time dependency iconv found: NO  (tried builtin and system)
+
+sources/mpv/meson.build:688:8: ERROR: Dependency "iconv" not found (tried builtin and system)
+
+Independent libass detection:
+Run-time dependency iconv found: YES
+
+Meson 1.12.1 source:
+https://github.com/mesonbuild/meson/blob/1.12.1/mesonbuild/dependencies/misc.py
+https://github.com/mesonbuild/meson/blob/1.12.1/mesonbuild/compilers/mixins/clike.py

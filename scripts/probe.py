@@ -17,6 +17,9 @@ parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--warp', action='store_true')
 parser.add_argument('--wasapi', action='store_true')
 parser.add_argument('--pyav', choices=['first', 'last'])
+parser.add_argument('--graphics-api', choices=['d3d11', 'opengl', 'vulkan'])
+parser.add_argument('--graphics-context')
+parser.add_argument('--graphics-only', action='store_true')
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 report = {'checks': {}, 'dll_sha256': hashlib.sha256(args.dll.read_bytes()).hexdigest(), 'python': sys.version}
@@ -25,6 +28,7 @@ av = None
 if args.pyav == 'first':
     import av
 
+dll_search = os.add_dll_directory(str(args.dll.resolve().parent))
 lib = C.CDLL(str(args.dll.resolve()))
 lib.mpv_create.restype = C.c_void_p
 lib.mpv_initialize.argtypes = [C.c_void_p]
@@ -140,6 +144,11 @@ try:
                'ao': 'wasapi' if args.wasapi else 'null', 'volume': '0', 'config': 'no'}
     if args.warp:
         options.update({'gpu-api': 'd3d11', 'gpu-context': 'd3d11', 'd3d11-warp': 'yes'})
+    if args.graphics_api:
+        options['gpu-api'] = args.graphics_api
+    if args.graphics_context:
+        options['gpu-context'] = args.graphics_context
+    report['requested_graphics'] = {'api': options.get('gpu-api', 'auto'), 'context': options.get('gpu-context', 'auto'), 'warp': args.warp}
     for name, value in options.items():
         check('option:' + name, lib.mpv_set_option_string(handle, name.encode(), value.encode()) >= 0)
     check('initialize', lib.mpv_initialize(handle) >= 0)
@@ -148,7 +157,7 @@ try:
     report['versions'] = {name: prop(name) for name in ('mpv-version', 'ffmpeg-version', 'mpv-configuration')}
     command('loadfile', str(args.media.resolve()))
     check('load', wait(lambda: prop('vo-configured') == 'yes' and prop('audio-params/samplerate') is not None), prop('current-vo'))
-    report['output'] = {name: prop(name) for name in ('current-vo', 'current-ao', 'hwdec-current', 'audio-params', 'video-params')}
+    report['output'] = {name: prop(name) for name in ('current-vo', 'current-gpu-context', 'current-ao', 'hwdec-current', 'audio-params', 'video-params')}
     check('audio_output', prop('current-ao') == ('wasapi' if args.wasapi else 'null'), report['output'])
     check('metadata', float(prop('duration') or 0) >= 4 and int(prop('video-params/w') or 0) == 320)
     setprop('pause', 'no')
@@ -157,6 +166,15 @@ try:
     paused = position()
     time.sleep(.25)
     check('pause', abs(position() - paused) < .08, [paused, position()])
+    if args.graphics_only:
+        image = args.output / 'graphics.png'
+        command('screenshot-to-file', str(image.resolve()), 'video')
+        check('graphics_capture', wait(lambda: image.exists() and image.stat().st_size > 100))
+        check('graphics_png', image.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'))
+        report['graphics_png_sha256'] = hashlib.sha256(image.read_bytes()).hexdigest()
+        report['loaded_modules'] = modules()
+        report['success'] = True
+        raise SystemExit(0)
     check('seek_exact', seek(2), position())
     command('seek', 1.5, 'absolute+keyframes')
     check('scrub_preview', wait(lambda: prop('seeking') == 'no' and 0 <= position() < 1.8), position())

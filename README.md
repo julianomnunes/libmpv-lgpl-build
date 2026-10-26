@@ -1,7 +1,9 @@
 # Isolated Windows x64 libmpv build
 
-**Current result: no DLL produced yet. Continuation authorizes runs 4 and 5 only,
-without reruns; the original three failures remain documented.**
+**Current result: no DLL produced; the five-execution budget is exhausted.**
+LuaJIT's host/target preflight and exact image recovery passed in run 5. MPV
+still stops at Meson's static iconv discovery. No Windows runtime or Vulkan
+comparison result is claimed; the original five attempts remain documented.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 
