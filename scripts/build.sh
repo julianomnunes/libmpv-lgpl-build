@@ -186,4 +186,4 @@ cp -r scripts dist/recipe
 python3 scripts/sources.py --collect
 (cd dist && find runtime test-tools -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
 tar --sort=name --mtime="@$SOURCE_DATE_EPOCH" --owner=0 --group=0 --numeric-owner -czf dist/corresponding-sources.tar.gz \
-  archives sources.lock.json scripts README.md REDISTRIBUTION.md toolchain-notices upstream-origin.json
+  archives sources.lock.json scripts README.md REDISTRIBUTION.md toolchain-notices toolchain-oci upstream-origin.json

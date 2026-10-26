@@ -18,13 +18,11 @@ jobs:
           persist-credentials: false
       - name: Fetch and verify locked sources
         run: python3 scripts/sources.py
-      - name: Pull locked toolchain and compile without network
+      - name: Load exact locked toolchain and compile without network
         run: |
-          IMAGE=ghcr.io/btbn/ffmpeg-builds/win64-lgpl@sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a
-          mkdir -p dist/evidence
-          docker pull "$IMAGE"
-          docker image inspect "$IMAGE" > dist/evidence/toolchain-image.json
-          docker run --rm --network=none -v "$GITHUB_WORKSPACE:/work" -w /work "$IMAGE" bash scripts/build.sh
+          python3 scripts/load_toolchain.py
+          IMAGE_ID=$(cat dist/evidence/toolchain-reference.txt)
+          docker run --rm --network=none -v "$GITHUB_WORKSPACE:/work" -w /work "$IMAGE_ID" bash scripts/build.sh
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:

@@ -9,6 +9,7 @@ no reruns. The original attempt records below are preserved.
 | 1 | Failed: zimg source snapshot omitted its required graphengine submodule. Preceding libraries compiled. | [40354512350](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40354512350) |
 | 2 | Runtime dependencies and FFmpeg compiled. MPV configuration failed to locate iconv because the explicit linker arguments omitted the new prefix library search path. | [40355969742](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40355969742) |
 | 3 | The early iconv C++ link check passed. LuaJIT's Linux host/minilua link inherited the Windows-only `--no-insert-timestamp` flag and failed. No DLL was produced. | [40360933569](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40360933569) |
+| 4 | Source hashes passed; the registry returned `manifest unknown` for the original fixed tool image. Compilation did not start, so the LuaJIT correction was not exercised. | [40366278253](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40366278253) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -93,3 +94,17 @@ fallback; it does not establish equivalence to R5. If a DLL is produced, native
 Windows tests must record actual selected graphics/hardware-decoding paths,
 exercise the required functions and compare the available paths with the R5
 configuration before drawing a scoped conclusion.
+
+Run 4's environmental blocker is addressed without changing the toolchain:
+the exact OCI manifest (SHA-256 `59662fba...`) and config (image ID
+`sha256:bcb2595e1c9698573daaee97cf871954334f4d9d01b1fb419291b4759b44d3e3`)
+were saved before the manifest disappeared. All 17 original compressed blobs
+(2,067,025,173 bytes) were checked available with exact Content-Length before
+run 5; see [preflight evidence](evidence/toolchain-recovery-preflight.json).
+The recovery loader verifies both compressed blob hashes and the uncompressed
+rootfs diff IDs, then requires Docker to report that same image ID/rootfs chain.
+Docker archive layout and compressed-layer loading were checked against Moby
+`v28.3.3`, `image/tarexport/load.go`. The OCI metadata is preserved byte-for-byte.
+No replacement image, new dependency revision or extra build execution is used.
+Only run 5 remains authorized. Upstream blob retention remains an availability
+limitation even if recovery succeeds.

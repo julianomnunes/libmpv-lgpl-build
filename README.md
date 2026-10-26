@@ -26,12 +26,13 @@ LittleCMS's GPL plugins are disabled; its MIT core is retained.
 ## Rebuild
 
 On a Linux x64 Docker host, fetch this recipe, run `python3 scripts/sources.py`,
-then run the locked image with the repository mounted as `/work`:
+then load and verify the exact locked image and run it with the repository
+mounted as `/work`:
 
 ```
+python3 scripts/load_toolchain.py
 docker run --rm --network=none -v "$PWD:/work" -w /work \
-  ghcr.io/btbn/ffmpeg-builds/win64-lgpl@sha256:59662fba1b2d870e1aa1d074d3620b71dc98c62df01e2682a0edec224658ad7a \
-  bash scripts/build.sh
+  "$(cat dist/evidence/toolchain-reference.txt)" bash scripts/build.sh
 ```
 
 Use a clean directory for each rebuild. Sources, compiler image, build paths,
@@ -39,6 +40,14 @@ timestamp and PE linker timestamp policy are fixed. Reproducibility is an
 empirical result only after independent clean builds produce the same DLL hash.
 The CI is manual-only, uses standard public hosted runners, has a 90-minute
 build timeout and now authorizes only workflow executions 4 and 5, with no rerun.
+
+The original registry manifest became unavailable during run 4. Its exact OCI
+manifest/config had already been preserved. The loader can recover the same
+image from the original content-addressed blobs: it verifies the manifest,
+config, every compressed and uncompressed layer, Docker image ID and complete
+rootfs chain. It does not select `latest` or rebuild a different image. Recovery
+still depends on upstream retaining those blobs; their availability is not
+guaranteed permanently.
 
 Artifacts include the DLL/headers, notices, original source archives, recipe,
 configuration, link map, PE imports and test evidence. `test-tools/ffmpeg.exe`

@@ -4,3 +4,4 @@
 *.json text eol=lf
 *.yml text eol=lf
 toolchain-notices/* -text
+toolchain-oci/* -text
