@@ -1,0 +1,169 @@
+{
+  "essential-run8": [
+    {
+      "case": "d3d11-pyav-first",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "first",
+        "--graphics-api",
+        "d3d11",
+        "--graphics-context",
+        "d3d11"
+      ],
+      "success": true,
+      "error": null,
+      "returncode": 0,
+      "checks": 61,
+      "output": {
+        "current-vo": "gpu",
+        "current-gpu-context": "d3d11",
+        "current-ao": "wasapi",
+        "hwdec-current": "d3d11va",
+        "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+        "video-params": "{\"pixelformat\":\"d3d11\",\"hw-pixelformat\":\"nv12\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+      },
+      "vulkan_loader": {
+        "sha256": "e24da109c67728423ce11bca10bf2519338b0153b4fc14fbbfb69a9d82cc7d6b",
+        "api_version": 4211033,
+        "result": 0
+      },
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    },
+    {
+      "case": "default-pyav-last",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "last"
+      ],
+      "success": true,
+      "error": null,
+      "returncode": 0,
+      "checks": 58,
+      "output": {
+        "current-vo": "gpu",
+        "current-gpu-context": "d3d11",
+        "current-ao": "wasapi",
+        "hwdec-current": "d3d11va",
+        "audio-params": "{\"samplerate\":48000,\"channel-count\":2,\"channels\":\"stereo\",\"hr-channels\":\"stereo\",\"format\":\"floatp\"}",
+        "video-params": "{\"pixelformat\":\"d3d11\",\"hw-pixelformat\":\"nv12\",\"average-bpp\":12,\"w\":320,\"h\":180,\"dw\":320,\"dh\":180,\"crop-x\":0,\"crop-y\":0,\"crop-w\":320,\"crop-h\":180,\"aspect\":1.777778,\"aspect-name\":\"16:9\",\"par\":1.000000,\"sar\":1.777778,\"sar-name\":\"16:9\",\"colormatrix\":\"bt.601\",\"colorlevels\":\"limited\",\"primaries\":\"bt.709\",\"gamma\":\"bt.1886\",\"sig-peak\":0.000000,\"light\":\"display\",\"chroma-location\":\"mpeg2/4/h264\",\"stereo-in\":\"mono\",\"rotate\":0,\"alpha\":\"none\"}"
+      },
+      "vulkan_loader": {
+        "sha256": "e24da109c67728423ce11bca10bf2519338b0153b4fc14fbbfb69a9d82cc7d6b",
+        "api_version": 4211033,
+        "result": 0
+      },
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    },
+    {
+      "case": "vulkan-software",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "last",
+        "--graphics-api",
+        "vulkan",
+        "--graphics-context",
+        "winvk",
+        "--software-decode",
+        "--visible-host"
+      ],
+      "success": false,
+      "error": "process timeout",
+      "returncode": null,
+      "checks": 0,
+      "output": null,
+      "vulkan_loader": null,
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    }
+  ],
+  "essential-run8-no-obs": [
+    {
+      "child_environment": {
+        "DISABLE_VULKAN_OBS_CAPTURE": "1"
+      },
+      "case": "vulkan-software",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "last",
+        "--graphics-api",
+        "vulkan",
+        "--graphics-context",
+        "winvk",
+        "--software-decode",
+        "--visible-host"
+      ],
+      "success": false,
+      "error": "process timeout",
+      "returncode": null,
+      "checks": 0,
+      "output": null,
+      "vulkan_loader": null,
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    }
+  ],
+  "essential-run8-no-implicit": [
+    {
+      "child_environment": {
+        "DISABLE_VULKAN_OBS_CAPTURE": "1",
+        "VK_LOADER_LAYERS_DISABLE": "~implicit~",
+        "VK_LOADER_DEBUG": "layer"
+      },
+      "case": "vulkan-software",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "last",
+        "--graphics-api",
+        "vulkan",
+        "--graphics-context",
+        "winvk",
+        "--software-decode",
+        "--visible-host"
+      ],
+      "success": false,
+      "error": "process timeout",
+      "returncode": null,
+      "checks": 0,
+      "output": null,
+      "vulkan_loader": null,
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    }
+  ],
+  "essential-run8-medium": [
+    {
+      "child_environment": {
+        "DISABLE_VULKAN_OBS_CAPTURE": "1"
+      },
+      "case": "vulkan-software",
+      "flags": [
+        "--wasapi",
+        "--pyav",
+        "last",
+        "--graphics-api",
+        "vulkan",
+        "--graphics-context",
+        "winvk",
+        "--software-decode",
+        "--visible-host"
+      ],
+      "success": false,
+      "error": "process timeout",
+      "returncode": null,
+      "checks": 0,
+      "output": null,
+      "vulkan_loader": null,
+      "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8"
+    }
+  ],
+  "r5_visible_host_preflight": "Timed out after 35 seconds; created Vulkan device/pipeline with H264/NVDEC",
+  "restricted_token_launcher": "No child launched: linked token unavailable (WinError 1312); CreateProcessWithTokenW restricted launch returned invalid parameter",
+  "medium_helper": {
+    "integrity_rid": 8192,
+    "scope": "only this disposable helper and its child processes; no parent/global token changed"
+  },
+  "scope": "Only disposable helper token/child environments changed; no global OBS, driver, UAC, account, registry or application changes",
+  "conclusion": "Native Vulkan remains unvalidated. Driver/overlay path wait observed; exact cause and a library fix are not proved. Run 9 not started."
+}

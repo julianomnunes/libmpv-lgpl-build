@@ -1,10 +1,11 @@
 # Isolated Windows x64 libmpv build
 
-**Current state: Vulkan restoration is prepared for authorized runs 8/9.**
-The reproduced non-Vulkan DLL from builds 6/7 is preserved. A matching official
-Khronos loader/header pair is pinned at 1.4.345, with an early loader/Meson
-preflight and all existing D3D11/LGPL checks retained. No new runtime result is
-claimed until the candidate passes its essential Windows probes.
+**Current result: run 8 built the Vulkan-enabled DLL pair and passed Windows smoke (52 checks).**
+Native D3D11/WASAPI and both PyAV load orders passed with Python 3.14.
+**Forced native Vulkan stalls at the first frame; acceptance remains blocked.**
+A driver/OBS-hook wait was observed, but the exact cause is not proved.
+The DLL pair, full sources and notices are preserved as a candidate only.
+Run 9 remains unused; no integration, release or legal approval is claimed.
 See [BUILD_STATUS.md](BUILD_STATUS.md) for the exact failures, artifacts and
 remaining work. The recipe is experimental and is not ready for redistribution.
 

@@ -1,0 +1,141 @@
+{
+  "run_id": 40419014102,
+  "commit": "dbbe9faaea66b1ae105132da3207c2f844252aff",
+  "runtime_sha256": {
+    "libmpv-2.dll": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8",
+    "vulkan-1.dll": "e24da109c67728423ce11bca10bf2519338b0153b4fc14fbbfb69a9d82cc7d6b"
+  },
+  "build_artifact_sha256": "603adc89bd2ff486e7991c99cf3a1c1466be0ad6afc755d0dcb847f7a887ee02",
+  "smoke_artifact_sha256": "d4f0d5c8ced7b54f1f1fe66c8baff8922235c783f22d4c83ac71516dce8390ab",
+  "source_bundle_sha256": "ec45c1ccf0151db40e44690ee966faac1e89c7a9896cebf61b28bbdae1a6ea4f",
+  "source_archives": {
+    "archives/dav1d.tar.gz": "d4956d2a926011e242659e0d0e21b0213d61e14e853fa5585a8b79b2a0f115ba",
+    "archives/fast-float.tar.gz": "2b132274539286e41f37857cac22aa8441d21bd86d55de825a3342b149f66801",
+    "archives/ffmpeg.tar.gz": "d9090aa589f24e1d2aa730b7955d105d5f79ad12f0c7dd6323f10e58538b7b24",
+    "archives/ffnvcodec.tar.gz": "ea251ed884765b7523e0f4fa814dfd9acd7b5dcc43878cad744b77a46b429e48",
+    "archives/freetype.tar.gz": "e9d4680f9d751add3571e5407f2943a18ece9c02a78e1bb456aae305254d8bc9",
+    "archives/fribidi.tar.gz": "2501e74cd7a630f3711da529e8c983582648bb8da0eceb52e000ce6a68bde463",
+    "archives/glad.tar.gz": "33dbeae44d8315ece57e14eba4b1b4a02ac5406d1c4f49cd20048c91522a6b9a",
+    "archives/glslang.tar.gz": "907174a24713c6202c146f164bf81783f1fbc79c8cb821a30f18f159eb980312",
+    "archives/graphengine.tar.gz": "663bc958094280e3dabfa76a408296a51f5222f56115fd7782eae737edeaa179",
+    "archives/harfbuzz.tar.gz": "7c24de123b8f3201a164816d27703662cebd1b416845e71165006cd70fb14a0f",
+    "archives/jinja.tar.gz": "b88a20dcc2e34072fcf4159325bc6c34cd4b29a81a8b83d15d2f28ba561da296",
+    "archives/lcms2.tar.gz": "84f48112ddca86f77f4495d29464c5dd9e24ac080979fbe6e0fa6d3ffcc0ae43",
+    "archives/libass.tar.gz": "edb3e866ca9394152484bc9a83b68a395f5c9052ae0dc502e4100035c250330b",
+    "archives/libiconv.tar.gz": "3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8",
+    "archives/libplacebo.tar.gz": "696ba3cc9608d2f6116b1eb217d6c974a7d7db52dbb5a2525632d0002d473be5",
+    "archives/luajit.tar.gz": "15625df3ebfbd1f76371005bffae39b84c65e718e57acc9a9c57863c7c101541",
+    "archives/markupsafe.tar.gz": "da7c010c9c81a66ac73036558c1fcb6212b50482f43211cd1254035b94f82414",
+    "archives/mpv.tar.gz": "f616394c104e4caf975bde1830336385c17596cdc94a2434d5dd132a5aa4a201",
+    "archives/shaderc.tar.gz": "4a2451e747e011695d25847e75316722df80120b3f141600c43c9f5cedd70578",
+    "archives/spirv-cross.tar.gz": "b99db6ee6182dbeb102257e755bf6d4978c23dcfd3329033304779279bc27212",
+    "archives/spirv-headers.tar.gz": "392f4801409aad9c4f1b77745f179952fd6264e4c8bd0fc1bc45dfa6807bf6d0",
+    "archives/spirv-tools.tar.gz": "82c62146083fd558735a3171cf97cfc47903ca7d368482e87f94bd44883c0f00",
+    "archives/vulkan-headers.tar.gz": "75967a8288ff16044a86d1af462b96d2e75c435937efb75f2bb4102ab0382f29",
+    "archives/vulkan-loader.tar.gz": "46787c41f03c90949a5262eb0eaaca79214829eb59b61c38f7890adb32ea70f8",
+    "archives/zimg.tar.gz": "539495d51fcd8c7ef9b89a611454e0c1173d18e8d4e743efdef67c4aa7e40d4f",
+    "archives/zlib.tar.gz": "cafa75b907cd067b471fba32a2772c010a859086241ef70d3d57eda6aeea3a64"
+  },
+  "all_runtime_manifest_hashes_verified": true,
+  "lgpl_exclusions_verified": true,
+  "mpv_vulkan_d3d11_iconv_enabled": true,
+  "ffmpeg_vulkan_hardware_contexts_enabled": false,
+  "loader_embedded_notices_verified": [
+    {
+      "source_file": "loader/cJSON.h",
+      "source_sha256": "536d02d5ad79eee434e6ad06200eb10337fa90dea32d05c9f7df69a172c5db40",
+      "notice_file": "loader/cJSON.h.notice.txt",
+      "notice_sha256": "3384d75264549cd04a5c00538a15871785f3f6ba60a779781df747d591655892"
+    },
+    {
+      "source_file": "loader/dirent_on_windows.c",
+      "source_sha256": "4d4181b0018d7ddc29a866aebcc0f5a1b6574de56a3ef574b20698792b325338",
+      "notice_file": "loader/dirent_on_windows.c.notice.txt",
+      "notice_sha256": "58c2225964f9840bcc51dc64028396ecaa4d76d2b7453fcc47a03ccc5c0f4bd6"
+    },
+    {
+      "source_file": "loader/dirent_on_windows.h",
+      "source_sha256": "3ac29aed7e519e45b131ef5d3b7ebdd4f616424790c462811bf50755776085bc",
+      "notice_file": "loader/dirent_on_windows.h.notice.txt",
+      "notice_sha256": "e70a2b66f014596ff56b3d521b487490594eda350acbfd9539c603f28568f34f"
+    }
+  ],
+  "notice_files": 92,
+  "pe_imports": {
+    "libmpv-pe.txt": [
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "OPENGL32.dll",
+      "SHELL32.dll",
+      "AVRT.dll",
+      "bcrypt.dll",
+      "CRYPT32.dll",
+      "dwmapi.dll",
+      "GDI32.dll",
+      "IMM32.dll",
+      "ncrypt.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "api-ms-win-core-path-l1-1-0.dll",
+      "RPCRT4.dll",
+      "Secur32.dll",
+      "SHCORE.dll",
+      "SHLWAPI.dll",
+      "USER32.dll",
+      "USP10.dll",
+      "UxTheme.dll",
+      "VERSION.dll",
+      "WS2_32.dll",
+      "vulkan-1.dll"
+    ],
+    "vulkan-loader-pe.txt": [
+      "ADVAPI32.dll",
+      "CFGMGR32.dll",
+      "KERNEL32.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll"
+    ]
+  },
+  "initial_preflight": {
+    "version": "1.4.345",
+    "loader_commit": "363f465abadab0a8dcfc5c85d2c691e9b0b788d6",
+    "headers_commit": "74d8a6cb930c68ef617b202c3ff3c59d919e086b",
+    "prefer_static": true,
+    "loader_is_explicit_shared_exception": true,
+    "controlled_import_library": "/work/prefix/lib/libvulkan-1.dll.a",
+    "loader_sha256": "e24da109c67728423ce11bca10bf2519338b0153b4fc14fbbfb69a9d82cc7d6b",
+    "mingw_gas_unknown_function_trampolines": true,
+    "no_external_dependency_downloads": true
+  },
+  "runtime_acceptance": {
+    "windows_ci": true,
+    "d3d11_wasapi": true,
+    "pyav_both_load_orders": true,
+    "vulkan_native": false,
+    "vulkan_exact_cause": "not proved",
+    "clean_reproduction": "run 9 not started"
+  },
+  "limits": [
+    "Candidate only; native Vulkan remains blocked",
+    "Existing MinGW source/notice association and final application redistribution terms remain under review",
+    "CI artifact expiry is not permanent corresponding-source delivery"
+  ]
+}

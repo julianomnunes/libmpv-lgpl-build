@@ -5,10 +5,13 @@ Initial runs 1-7 and their evidence are preserved below. Current authorization:
 restores Vulkan; run 9 is reserved for a clean reproduction or a specifically
 diagnosed correction. Manual dispatch only.
 
-Current state: the non-Vulkan DLL from clean builds 6/7 remains preserved and
-byte-identical. A reviewed Vulkan 1.4.345 loader/header addition and early Meson
-preflight are prepared for run 8. All existing D3D11, LGPL exclusions and EOF
-recovery tests remain required. No new DLL/runtime result is claimed yet.
+Current state: **run 8 passed build and Windows smoke (52 checks)** and
+produced libmpv + the matching Vulkan loader. Vulkan/D3D11/iconv are enabled;
+all LGPL exclusions pass. Native D3D11/WASAPI and both PyAV orders passed.
+**Native Vulkan stalls during the first frame and remains blocking.**
+Bounded investigation found a driver/OBS-hook wait; exact cause is not proved.
+Work stopped at this substantial runtime-validation blocker. Run 9 is unused;
+no rerun, clean Vulkan reproduction or integration approval is claimed.
 
 | Run | Result | Evidence |
 | --- | --- | --- |
@@ -19,6 +22,7 @@ recovery tests remain required. No new DLL/runtime result is claimed yet.
 | 5 | Exact image recovered and verified; initial LuaJIT ELF/COFF preflight passed; dependencies and FFmpeg compiled. MPV still failed at static iconv discovery. No DLL; Windows job skipped. | [40367529330](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40367529330) |
 | 6 | Build passed, including the initial static iconv preflight and final static link. Windows smoke failed at raw EOF back-step; the identical failure was reproduced with R5. DLL and both artifacts preserved and verified; corrected local smoke passed without rebuilding. | [40378862793](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40378862793) |
 | 7 | Clean build and corrected Windows smoke passed (50 checks). DLL, FFmpeg tool, runtime manifest, link map and source/license manifest are byte-identical to build 6. Vulkan remains absent and blocking. | [40401417585](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40401417585) |
+| 8 | Build, initial Vulkan/Meson preflight and Windows smoke passed (52 checks). Native D3D11/PyAV passed; forced Vulkan stalled even with software decoding. DLL pair and complete sources/notices preserved. Run 9 not dispatched. | [40419014102](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40419014102) |
 
 The diagnosed source omission is fixed by locking the gitlink revision
 `cb5b2ce13384ec2491f0c37256ea210034799f69` and its archive hash. Other gitlinks
@@ -336,3 +340,84 @@ This is a preexisting test-path limitation, not evidence that the new DLL
 works or fails. Candidate validation may isolate software decoding if the same
 specific interop problem is observed. No HDR/visual/opening stress battery or
 application execution is planned.
+
+
+## Result after run 8: Vulkan compiled; native acceptance blocked
+
+The [verified build](evidence/run8-build-verification.json) produced this required
+pair, from unchanged MPV baa3e11d and the locked Khronos 1.4.345 loader/headers:
+
+| Runtime file | SHA-256 |
+| --- | --- |
+| libmpv-2.dll | de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8 |
+| vulkan-1.dll | e24da109c67728423ce11bca10bf2519338b0153b4fc14fbbfb69a9d82cc7d6b |
+
+[Full build artifact](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40419014102/artifacts/12698500080),
+145,313,631 bytes, SHA-256
+`603adc89bd2ff486e7991c99cf3a1c1466be0ad6afc755d0dcb847f7a887ee02`.
+It includes both DLLs, headers/import library, recipe, link map, PE imports,
+26 verified source archives and 92 notice files, including all three embedded
+loader notices. The corresponding-source tarball SHA-256 is
+`ec45c1ccf0151db40e44690ee966faac1e89c7a9896cebf61b28bbdae1a6ea4f`.
+MPV HAVE_VULKAN/HAVE_D3D11/HAVE_ICONV are 1; HAVE_GPL is 0. FFmpeg
+GPL/nonfree/version3 stay 0; its native Vulkan hardware contexts remain off.
+The supported hwcontext stub permits graphics Vulkan without enabling those
+extra codecs/filters. No forbidden or inherited archive appears in the map.
+The helper FFmpeg and client import library hashes still match builds 6/7.
+
+[Windows smoke artifact](https://github.com/julianomnunes/libmpv-lgpl-build/actions/runs/40419014102/artifacts/12696929692),
+SHA-256 `d4f0d5c8ced7b54f1f1fe66c8baff8922235c783f22d4c83ac71516dce8390ab`:
+[all 52 checks passed](evidence/run8-windows-smoke.json) using WARP.
+Native Python 3.14.7/PyAV 18.1.0/FFmpeg 9.0.2 LGPL passed
+[D3D11/PyAV first (61 checks)](evidence/run8-native-d3d11-pyav-first.json) and
+[default/PyAV last (58 checks)](evidence/run8-native-default-pyav-last.json).
+The default remains vo=gpu/D3D11/D3D11VA; WASAPI, playback, pause, seeks,
+frame steps, reverse/EOF recovery and PNG preview passed. All three PyAV
+operations and actual module hashes passed, without x264/x265. The actual
+bundled loader identity was checked; its API reports 1.4.345.
+
+The [native summary](evidence/run8-native-summary.json) preserves the failed
+forced-Vulkan test: first-frame rendering stalled after successful Vulkan
+device, shader and pipeline creation, even with software video decoding.
+No transport/preview pass on Vulkan is inferred. A single
+[Frida thread snapshot](evidence/run8-vulkan-thread-diagnosis.json) shows the
+render path waiting inside the NVIDIA driver with OBS graphics-hook64.dll
+interposed. Stripped-module symbol labels are approximate; this observation
+does not establish OBS as the sole cause or prove a library defect. R5 had
+also stalled in a comparable forced-Vulkan probe.
+
+Only child-process environment filters were tried, using the installed OBS
+manifest and the official loader's documented implicit-layer filter. Elevated
+execution can ignore those variables. A linked standard-user token was
+unavailable (WinError 1312); a restricted-token launcher failed before starting
+a child. A disposable helper was then reduced to verified medium integrity,
+but its Vulkan child still timed out. No OBS service, driver, UAC, account,
+registry, application option or global environment was changed. These bounded
+diagnostics did not establish a corrective build change. **Vulkan runtime
+acceptance and R5 equivalence remain blocked.**
+
+Run 9 is deliberately unused: recompiling the same sources would not resolve
+this first-frame block, and a clean reproduction is secondary to functionality.
+The minimum next step is to exercise this existing DLL pair in a clean,
+non-elevated Windows session without injected capture layers, before any new
+build. If that passes, the remaining authorized run 9 could reproduce the
+unchanged recipe (about 28 minutes based on run 8). Otherwise the driver/hook/
+renderer interaction requires a separately scoped diagnosis; no speculative
+patch or LGPL relaxation was made.
+
+For future integration, the candidate requires **both** DLLs adjacent, with the
+loader actually resolved from that bundle; vo=gpu/D3D11 and the approved PyAV
+stack stay unchanged. No such integration is authorized or performed here.
+The source/notice chain is recorded, but the existing MinGW source association,
+durable source delivery and final application LGPL terms still require review;
+no legal certification follows from these engineering checks.
+
+[Preservation evidence](evidence/run8-preservation.json) confirms the original
+checkout/R5 and all seven fingerprints and preexisting Git changes unchanged.
+The CI ledger has eight runs, all attempt 1. No release or 11E work was started.
+The delivered run 8 package is explicitly a **candidate with native Vulkan
+acceptance blocked**, not a ready-to-integrate or redistributability approval.
+
+Local handoff: `libmpv-lgpl-vulkan-run8-candidate.zip`, with the full source/notice
+package plus current evidence. [Delivery hash/content manifest](evidence/run8-delivery.json).
+It is labelled candidate/blocked and is not a published release.

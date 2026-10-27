@@ -1,0 +1,17 @@
+{
+  "filename": "libmpv-lgpl-vulkan-run8-candidate.zip",
+  "bytes": 144617829,
+  "sha256": "0aef014c600e973d36b26a5e15eb8c94fc9cd4983a08a20a9302a5e85edc64c9",
+  "status": "candidate; native Vulkan acceptance blocked",
+  "contains": [
+    "paired runtime DLLs",
+    "headers/import library",
+    "26 locked source archives in corresponding-source tarball",
+    "92 notices",
+    "recipe/link map/PE imports",
+    "CI and native evidence",
+    "full isolated thread snapshot",
+    "current result/limits"
+  ],
+  "run9_executed": false
+}

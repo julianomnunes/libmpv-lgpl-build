@@ -1,0 +1,8 @@
+{
+  "all_seven_original_fingerprints_unchanged": true,
+  "original_git_status_unchanged": true,
+  "r5_and_original_checkout_modified": false,
+  "global_OBS_driver_UAC_registry_or_accounts_changed": false,
+  "isolated_helper_integrity_change_only": true,
+  "integration_release_11E_started": false
+}

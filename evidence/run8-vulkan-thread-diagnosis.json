@@ -1,0 +1,215 @@
+{
+  "evidence_id": "ev_55a041623d58e9d065b0590606a43fd14aa709cdd3e0c54d27637a84f3e36501",
+  "provider": {
+    "id": "frida",
+    "name": "Frida",
+    "version": null
+  },
+  "parameters": {
+    "session_id": "fe038e91-9c66-45ce-b562-1ed67c3a812b",
+    "device_id": "local",
+    "mode": "attach",
+    "pid": 30272
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The target operating system and architecture were not reported by this observation."
+  ],
+  "source_sha256": "36d1e6cd94f1aa77aace372cc13badc046c122d5727c295109f7f013f9dae463",
+  "cleanup_error": null,
+  "controlled_process": {
+    "pid": 30272,
+    "dll_sha256": "de35e5b4ebd9c0a2f12033c76479c1653becc83cb81e7ce4612b2354da6cb9e8",
+    "replay": "Isolated synthetic H264/AAC, vo=gpu, winvk, software decode; no application started"
+  },
+  "observed_thread_count": 67,
+  "relevant_threads": [
+    {
+      "id": 25120,
+      "state": "running",
+      "pc": "0x7ffccebc59c4",
+      "trace": [
+        {
+          "symbol": "0x7ffcceab97be python.exe!RtlSleepConditionVariableSRW",
+          "module": "ntdll.dll",
+          "offset": "0x597be"
+        },
+        {
+          "symbol": "0x7ffccc382a58 python.exe!SleepConditionVariableSRW",
+          "module": "KERNELBASE.dll",
+          "offset": "0x22a58"
+        },
+        {
+          "symbol": "0x7ffc1dec8662",
+          "module": "libmpv-2.dll",
+          "offset": "0x68662"
+        },
+        {
+          "symbol": "0x7ffc1dee7ef6 python.exe!mpv_get_property_string",
+          "module": "libmpv-2.dll",
+          "offset": "0x87ef6"
+        },
+        {
+          "symbol": "0x7ffcb79e5921 python.exe!ffi_call_win64",
+          "module": "ffi-8.dll",
+          "offset": "0x5921"
+        },
+        {
+          "symbol": "0x7ffcb79e572a python.exe!ffi_call",
+          "module": "ffi-8.dll",
+          "offset": "0x572a"
+        },
+        {
+          "symbol": "0x7ffcb79e54f2 python.exe!ffi_call",
+          "module": "ffi-8.dll",
+          "offset": "0x54f2"
+        },
+        {
+          "symbol": "0x7ffc956ee39a python.exe!DllCanUnloadNow",
+          "module": "_ctypes.pyd",
+          "offset": "0xe39a"
+        },
+        {
+          "symbol": "0x7ffc956eedc6 python.exe!DllCanUnloadNow",
+          "module": "_ctypes.pyd",
+          "offset": "0xedc6"
+        },
+        {
+          "symbol": "0x7ffc956e87e7",
+          "module": "_ctypes.pyd",
+          "offset": "0x87e7"
+        },
+        {
+          "symbol": "0x7ffc38044448 python.exe!PyObject_Vectorcall",
+          "module": "python314.dll",
+          "offset": "0x24448"
+        },
+        {
+          "symbol": "0x7ffc38043cd9 python.exe!PyObject_Vectorcall",
+          "module": "python314.dll",
+          "offset": "0x23cd9"
+        },
+        {
+          "symbol": "0x7ffc38046afc python.exe!PyEval_EvalFrameDefault",
+          "module": "python314.dll",
+          "offset": "0x26afc"
+        },
+        {
+          "symbol": "0x7ffc38085017 python.exe!PyObject_VectorcallDict",
+          "module": "python314.dll",
+          "offset": "0x65017"
+        }
+      ]
+    },
+    {
+      "id": 41880,
+      "state": "running",
+      "pc": "0x7ffccebc59c4",
+      "trace": [
+        {
+          "symbol": "0x7ffcceab9cfb python.exe!RtlSleepConditionVariableSRW",
+          "module": "ntdll.dll",
+          "offset": "0x59cfb"
+        },
+        {
+          "symbol": "0x7ffcceaa4d1d python.exe!RtlAcquireSRWLockExclusive",
+          "module": "ntdll.dll",
+          "offset": "0x44d1d"
+        },
+        {
+          "symbol": "0x7ffb9f1eb14d python.exe!vkGetInstanceProcAddr",
+          "module": "nvoglv64.dll",
+          "offset": "0xf7b14d"
+        },
+        {
+          "symbol": "0x7ffb9f017356 python.exe!vk_gr2608GetInstanceProcAddr",
+          "module": "nvoglv64.dll",
+          "offset": "0xda7356"
+        },
+        {
+          "symbol": "0x7ffb9f0174e5 python.exe!vk_gr2608GetInstanceProcAddr",
+          "module": "nvoglv64.dll",
+          "offset": "0xda74e5"
+        },
+        {
+          "symbol": "0x7ffb9f04e0a7 python.exe!vk_gr2608GetInstanceProcAddr",
+          "module": "nvoglv64.dll",
+          "offset": "0xdde0a7"
+        },
+        {
+          "symbol": "0x7ffb9f1eddba python.exe!vkGetInstanceProcAddr",
+          "module": "nvoglv64.dll",
+          "offset": "0xf7ddba"
+        },
+        {
+          "symbol": "0x7ffc909ac97e python.exe!dummy_debug_proc",
+          "module": "graphics-hook64.dll",
+          "offset": "0xc97e"
+        },
+        {
+          "symbol": "0x7ffc1faaa686 python.exe!mpv_render_context_get_info",
+          "module": "libmpv-2.dll",
+          "offset": "0x1c4a686"
+        },
+        {
+          "symbol": "0x7ffc1df60274 python.exe!mpv_stream_cb_add_ro",
+          "module": "libmpv-2.dll",
+          "offset": "0x100274"
+        },
+        {
+          "symbol": "0x7ffc1df5f2e6 python.exe!mpv_stream_cb_add_ro",
+          "module": "libmpv-2.dll",
+          "offset": "0xff2e6"
+        },
+        {
+          "symbol": "0x7ffccc22cd30 python.exe!wcsrchr",
+          "module": "ucrtbase.dll",
+          "offset": "0x2cd30"
+        },
+        {
+          "symbol": "0x7ffcce1fdda7 python.exe!BaseThreadInitThunk",
+          "module": "KERNEL32.DLL",
+          "offset": "0x2dda7"
+        },
+        {
+          "symbol": "0x7ffcceadee4c python.exe!RtlUserThreadStart",
+          "module": "ntdll.dll",
+          "offset": "0x7ee4c"
+        }
+      ]
+    },
+    {
+      "id": 43108,
+      "state": "running",
+      "pc": "0x7ffccbde1364",
+      "trace": [
+        {
+          "symbol": "0x7ffccdebaea2 python.exe!GetMessageW",
+          "module": "USER32.dll",
+          "offset": "0x2aea2"
+        },
+        {
+          "symbol": "0x7ffc1df823cf python.exe!mpv_render_context_get_info",
+          "module": "libmpv-2.dll",
+          "offset": "0x1223cf"
+        },
+        {
+          "symbol": "0x7ffccc22cd30 python.exe!wcsrchr",
+          "module": "ucrtbase.dll",
+          "offset": "0x2cd30"
+        },
+        {
+          "symbol": "0x7ffcce1fdda7 python.exe!BaseThreadInitThunk",
+          "module": "KERNEL32.DLL",
+          "offset": "0x2dda7"
+        },
+        {
+          "symbol": "0x7ffcceadee4c python.exe!RtlUserThreadStart",
+          "module": "ntdll.dll",
+          "offset": "0x7ee4c"
+        }
+      ]
+    }
+  ],
+  "interpretation": "Waits observed on driver/render path with graphics-hook64.dll from installed OBS; symbol names are nearest-export labels in stripped modules, not reliable exact function names. OBS causality not established; no build correction inferred."
+}
